@@ -4,7 +4,6 @@ namespace Fusions\Test\Monolog\LogDna\Formatter;
 use Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter;
 use Fusions\Test\Monolog\LogDna\TestHelperTrait;
 use Monolog\Logger;
-use mysql_xdevapi\Exception;
 use PHPUnit\Framework\TestCase;
 
 class SmartJsonFormatterTest extends TestCase
