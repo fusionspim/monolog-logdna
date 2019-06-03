@@ -17,7 +17,6 @@ class SmartJsonFormatterTest extends TestCase
         ]);
 
         $formatter = new SmartJsonFormatter;
-        $formatter->includeStacktraces(true);
         $output = json_decode($formatter->format($record), true);
 
         // Core fields.
@@ -78,7 +77,6 @@ class SmartJsonFormatterTest extends TestCase
         ]);
 
         $formatter = new SmartJsonFormatter;
-        $formatter->includeStacktraces(true);
         $formatter->setIgnorePaths([$excludedPath]);
         $output = json_decode($formatter->format($record), true);
 

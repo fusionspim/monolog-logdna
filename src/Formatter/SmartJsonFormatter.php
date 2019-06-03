@@ -3,6 +3,7 @@ namespace Fusions\Monolog\LogDna\Formatter;
 
 class SmartJsonFormatter extends BasicJsonFormatter
 {
+    protected $includeStacktraces = true;
     private $ignorePaths = [];
 
     /**
