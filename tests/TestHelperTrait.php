@@ -4,7 +4,7 @@ namespace Fusions\Test\Monolog\LogDna;
 use DateTime;
 use Monolog\Logger;
 
-trait TestRecordTrait
+trait TestHelperTrait
 {
     /**
      * @link https://github.com/Seldaek/monolog/blob/1.x/tests/Monolog/TestCase.php

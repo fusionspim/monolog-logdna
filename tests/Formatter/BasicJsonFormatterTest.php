@@ -2,13 +2,13 @@
 namespace Fusions\Test\Monolog\LogDna\Formatter;
 
 use Fusions\Monolog\LogDna\Formatter\BasicJsonFormatter;
-use Fusions\Test\Monolog\LogDna\TestRecordTrait;
+use Fusions\Test\Monolog\LogDna\TestHelperTrait;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 
 class BasicJsonFormatterTest extends TestCase
 {
-    use TestRecordTrait;
+    use TestHelperTrait;
 
     public function testFormat(): void
     {
