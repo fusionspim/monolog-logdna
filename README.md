@@ -48,7 +48,7 @@ $response = $handler->getLastResponse();
 
 ## Smart JSON Formatter
 
-The smart JSON formatter helps format complex stack traces, keeping them under LogDNA's 32Kb limit:
+The smart JSON formatter helps format complex stack traces, keeping them under LogDNA's [32KB limit](https://github.com/logdna/nodejs/blob/master/README.md#line):
 
 ```
 use Fusions\Monolog\LogDna\Handler\LogDnaHandler;
