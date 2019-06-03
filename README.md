@@ -2,6 +2,8 @@
 
 This library provides a simple Monolog handler for [LogDNA's](https://logdna.com/) [ingestion API](https://docs.logdna.com/reference#logsingest). It also provides a smart JSON formatter that can help correctly format complex stack traces.
 
+We wrote this library as an alternative to existing solutions because it provides more flexibility (e.g. control over the HTTP client), and it allowed us to open source our bespoke JSON formatter specifically designed for LogDNA. 
+
 ## Installation
 
 ```
