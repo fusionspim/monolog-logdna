@@ -7,6 +7,7 @@ use Monolog\Logger;
 use Monolog\Handler\AbstractProcessingHandler;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * @link: https://docs.logdna.com/reference#logsingest
@@ -21,6 +22,7 @@ class LogDnaHandler extends AbstractProcessingHandler
     private $macAddress = '';
     private $tags = [];
     private $httpClient;
+    private $lastResponse;
 
     public function __construct(string $ingestionKey, string $hostName, $level = Logger::DEBUG, $bubble = true)
     {
@@ -62,7 +64,7 @@ class LogDnaHandler extends AbstractProcessingHandler
 
     public function write(array $record)
     {
-        $this->getHttpClient()->request('POST', static::LOGDNA_INGESTION_URL, [
+        $this->lastResponse = $this->getHttpClient()->request('POST', static::LOGDNA_INGESTION_URL, [
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
@@ -78,5 +80,12 @@ class LogDnaHandler extends AbstractProcessingHandler
             ],
             'body' => $record['formatted'],
         ]);
+
+        return false === $this->bubble;
+    }
+
+    public function getLastResponse(): ResponseInterface
+    {
+        return $this->lastResponse;
     }
 }
