@@ -4,7 +4,7 @@ namespace Fusions\Monolog\LogDna\Formatter;
 class SmartJsonFormatter extends BasicJsonFormatter
 {
     protected $includeStacktraces = true;
-    private $ignorePaths = [];
+    private $ignorePaths          = [];
 
     /**
      * Ignore paths are paths to code that will be excluded from the log stack trace output.

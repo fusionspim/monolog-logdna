@@ -3,8 +3,8 @@ namespace Fusions\Monolog\LogDna\Handler;
 
 use Fusions\Monolog\LogDna\Formatter\BasicJsonFormatter;
 use Monolog\Formatter\FormatterInterface;
-use Monolog\Logger;
 use Monolog\Handler\AbstractProcessingHandler;
+use Monolog\Logger;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -17,10 +17,10 @@ class LogDnaHandler extends AbstractProcessingHandler
     public const LOGDNA_INGESTION_URL = 'https://logs.logdna.com/logs/ingest';
 
     private $ingestionKey = '';
-    private $hostName = '';
-    private $ipAddress = '';
-    private $macAddress = '';
-    private $tags = [];
+    private $hostName     = '';
+    private $ipAddress    = '';
+    private $macAddress   = '';
+    private $tags         = [];
     private $httpClient;
     private $lastResponse;
 
@@ -73,7 +73,7 @@ class LogDnaHandler extends AbstractProcessingHandler
                 'Content-Type' => 'application/json',
             ],
             'auth_basic' => [
-                $this->ingestionKey
+                $this->ingestionKey,
             ],
             'query' => [
                 'hostname' => $this->hostName,

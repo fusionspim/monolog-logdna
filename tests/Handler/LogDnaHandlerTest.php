@@ -14,10 +14,10 @@ class LogDnaHandlerTest extends TestCase
 {
     use TestHelperTrait;
 
-    public function testWrite()
+    public function test_write(): void
     {
         $mockHttpClient = new MockHttpClient([
-            new MockResponse('{ "status": "ok" }', ['http_code' => 200])
+            new MockResponse('{ "status": "ok" }', ['http_code' => 200]),
         ]);
 
         $formatter = new SmartJsonFormatter;
@@ -56,7 +56,7 @@ class LogDnaHandlerTest extends TestCase
         $this->assertSame(['FOO', 'BAR'], $request['query']['tags']);
 
         // Request Body.
-        $body = json_decode($request['body'], true);
+        $body                          = json_decode($request['body'], true);
         $body['lines'][0]['timestamp'] = (new DateTime('2019-01-01 01:01:01'))->getTimestamp(); // Hard code timestamp.
 
         $this->assertJsonStringEqualsJsonFile(
