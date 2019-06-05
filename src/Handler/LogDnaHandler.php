@@ -54,7 +54,11 @@ class LogDnaHandler extends AbstractProcessingHandler
 
     private function getHttpClient(): HttpClientInterface
     {
-        return $this->httpClient ?? HttpClient::create(['timeout' => 5]);
+        if (! $this->httpClient) {
+            $this->setHttpClient(HttpClient::create(['timeout' => 5]));
+        }
+
+        return $this->httpClient;
     }
 
     protected function getDefaultFormatter(): FormatterInterface
