@@ -10,7 +10,7 @@ class BasicJsonFormatterTest extends TestCase
 {
     use TestHelperTrait;
 
-    public function testFormat(): void
+    public function test_format(): void
     {
         $record = $this->getRecord(Logger::INFO, 'This is a test message', ['FOO' => 'BAR']);
 
@@ -23,8 +23,8 @@ class BasicJsonFormatterTest extends TestCase
                         'app'       => $record['channel'],
                         'level'     => $record['level_name'],
                         'meta'      => $record['context'],
-                    ]
-                ]
+                    ],
+                ],
             ]),
             trim((new BasicJsonFormatter)->format($record))
         );

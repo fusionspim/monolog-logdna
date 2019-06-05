@@ -10,14 +10,14 @@ class SmartJsonFormatterTest extends TestCase
 {
     use TestHelperTrait;
 
-    public function testFormat(): void
+    public function test_format(): void
     {
         $record = $this->getRecord(Logger::INFO, 'This is a test message', [
             'exception' => $this->getExceptionWithStackTrace('This is a test exception', 42, null),
         ]);
 
         $formatter = new SmartJsonFormatter;
-        $output = json_decode($formatter->format($record), true);
+        $output    = json_decode($formatter->format($record), true);
 
         // Core fields.
         $this->assertSame($record['datetime']->getTimestamp(), $output['lines'][0]['timestamp']);
@@ -26,9 +26,9 @@ class SmartJsonFormatterTest extends TestCase
         $this->assertSame($record['level_name'], $output['lines'][0]['level']);
 
         // Meta field.
-        $this->assertSame(get_class($record['context']['exception']),    $output['lines'][0]['meta']['exception']['class']);
+        $this->assertSame(get_class($record['context']['exception']), $output['lines'][0]['meta']['exception']['class']);
         $this->assertSame($record['context']['exception']->getMessage(), $output['lines'][0]['meta']['exception']['message']);
-        $this->assertSame($record['context']['exception']->getCode(),    $output['lines'][0]['meta']['exception']['code']);
+        $this->assertSame($record['context']['exception']->getCode(), $output['lines'][0]['meta']['exception']['code']);
 
         // Trace fields.
         $this->assertSame('MyClass', $output['lines'][0]['meta']['exception']['trace'][0]['class']);
@@ -68,7 +68,7 @@ class SmartJsonFormatterTest extends TestCase
         $this->assertSame([], $output['lines'][0]['meta']['exception']['trace'][3]['args']);
     }
 
-    public function testFormatIgnorePaths(): void
+    public function test_format_ignore_paths(): void
     {
         $excludedPath = '/my/fake/path/vendor';
 
@@ -81,6 +81,7 @@ class SmartJsonFormatterTest extends TestCase
         $output = json_decode($formatter->format($record), true);
 
         $this->assertCount(3, $output['lines'][0]['meta']['exception']['trace']);
+
         foreach ($output['lines'][0]['meta']['exception']['trace'] as $trace) {
             $this->assertStringNotContainsString($excludedPath, $trace['file']);
         }

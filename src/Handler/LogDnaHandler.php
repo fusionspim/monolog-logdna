@@ -5,8 +5,8 @@ use Fusions\Monolog\LogDna\Formatter\BasicJsonFormatter;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\ClientInterface as HttpClientInterface;
 use Monolog\Formatter\FormatterInterface;
-use Monolog\Logger;
 use Monolog\Handler\AbstractProcessingHandler;
+use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 
 /**
@@ -17,10 +17,10 @@ class LogDnaHandler extends AbstractProcessingHandler
     public const LOGDNA_INGESTION_URL = 'https://logs.logdna.com/logs/ingest';
 
     private $ingestionKey = '';
-    private $hostName = '';
-    private $ipAddress = '';
-    private $macAddress = '';
-    private $tags = [];
+    private $hostName     = '';
+    private $ipAddress    = '';
+    private $macAddress   = '';
+    private $tags         = [];
     private $httpClient;
     private $lastResponse;
 
@@ -73,7 +73,7 @@ class LogDnaHandler extends AbstractProcessingHandler
                 'Content-Type' => 'application/json',
             ],
             'auth' => [
-                $this->ingestionKey, ''
+                $this->ingestionKey, '',
             ],
             'query' => [
                 'hostname' => $this->hostName,

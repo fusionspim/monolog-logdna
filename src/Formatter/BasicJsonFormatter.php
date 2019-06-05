@@ -1,7 +1,6 @@
 <?php
 namespace Fusions\Monolog\LogDna\Formatter;
 
-use DateTime;
 use Monolog\Formatter\JsonFormatter;
 
 class BasicJsonFormatter extends JsonFormatter
@@ -16,8 +15,8 @@ class BasicJsonFormatter extends JsonFormatter
                     'app'       => $record['channel'],
                     'level'     => $record['level_name'],
                     'meta'      => $record['context'],
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 }

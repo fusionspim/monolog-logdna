@@ -1,7 +1,6 @@
 <?php
 namespace Fusions\Test\Monolog\LogDna\Handler;
 
-use DateTime;
 use Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter;
 use Fusions\Monolog\LogDna\Handler\LogDnaHandler;
 use Fusions\Test\Monolog\LogDna\TestHelperTrait;
@@ -16,14 +15,14 @@ class LogDnaHandlerTest extends TestCase
 {
     use TestHelperTrait;
 
-    public function testWrite()
+    public function test_write(): void
     {
         $mockHandler = new MockHandler([
-            new Response(200, [], '{ "status": "ok" }')
+            new Response(200, [], '{ "status": "ok" }'),
         ]);
 
         $mockHttpClient = new Client([
-            'handler' => HandlerStack::create($mockHandler)
+            'handler' => HandlerStack::create($mockHandler),
         ]);
 
         $formatter = new SmartJsonFormatter;

@@ -56,7 +56,7 @@ trait TestHelperTrait
                     'function' => 'require',
                     'file'     => '/my/fake/path/require.php',
                     'line'     => 42,
-                ]
+                ],
             ];
         }
 

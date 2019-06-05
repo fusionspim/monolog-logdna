@@ -20,7 +20,7 @@ class StackTraceTestException extends Exception
     protected function setTrace(array $trace): void
     {
         $reflection = new ReflectionClass(get_parent_class($this));
-        $property = $reflection->getProperty('trace');
+        $property   = $reflection->getProperty('trace');
         $property->setAccessible(true);
         $property->setValue($this, $trace);
     }

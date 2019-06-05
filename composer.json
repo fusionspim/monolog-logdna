@@ -6,8 +6,8 @@
         "php": ">=7.2",
         "ext-json": "*",
         "monolog/monolog": "^1.0",
-        "guzzle/guzzle": "^3.9",
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "fusionspim/php-cs-fixer-config": "^1.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.1",
