@@ -2,12 +2,12 @@
 namespace Fusions\Monolog\LogDna\Handler;
 
 use Fusions\Monolog\LogDna\Formatter\BasicJsonFormatter;
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\ClientInterface as HttpClientInterface;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Logger;
 use Monolog\Handler\AbstractProcessingHandler;
-use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @link: https://docs.logdna.com/reference#logsingest
@@ -55,7 +55,7 @@ class LogDnaHandler extends AbstractProcessingHandler
     private function getHttpClient(): HttpClientInterface
     {
         if (! $this->httpClient) {
-            $this->setHttpClient(HttpClient::create(['timeout' => 5]));
+            $this->setHttpClient(new HttpClient(['timeout' => 5]));
         }
 
         return $this->httpClient;
@@ -72,8 +72,8 @@ class LogDnaHandler extends AbstractProcessingHandler
             'headers' => [
                 'Content-Type' => 'application/json',
             ],
-            'auth_basic' => [
-                $this->ingestionKey
+            'auth' => [
+                $this->ingestionKey, ''
             ],
             'query' => [
                 'hostname' => $this->hostName,
