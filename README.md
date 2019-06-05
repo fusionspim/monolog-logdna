@@ -34,10 +34,10 @@ $handler->setMacAddress('A1-B2-C3-D4-E5-C6');
 $handler->setTags(['FOO', 'BAR']);
 ```
 
-The handler uses Symfony's [HTTP Client](https://symfony.com/doc/master/components/http_client.html) and is configured with a timeout of `5` seconds. You can set your own custom HTTP client if required:
+The handler uses Guzzle's [HTTP Client](http://docs.guzzlephp.org/en/stable/) and is configured with a timeout of `5` seconds. You can set your own custom HTTP client if required:
 
 ```
-$handler->setHttpClient(HttpClient::create([
+$handler->setHttpClient(new Client([
     'timeout' => 60,
     // Your options...
 ]));
