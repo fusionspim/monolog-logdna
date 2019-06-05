@@ -1,4 +1,5 @@
 .DS_Store
 .idea
 .phpunit.*
+.php_cs.cache
 vendor
