@@ -6,7 +6,8 @@
         "php": ">=7.2",
         "ext-json": "*",
         "monolog/monolog": "^1.0",
-        "symfony/http-client": "^4.3"
+        "symfony/http-client": "^4.3",
+        "fusionspim/php-cs-fixer-config": "^1.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.1",
