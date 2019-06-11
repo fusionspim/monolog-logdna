@@ -20,7 +20,7 @@ trait TestHelperTrait
             'level'      => $level,
             'level_name' => Logger::getLevelName($level),
             'channel'    => 'test',
-            'datetime'   => DateTime::createFromFormat('U.u', sprintf('%.6F', microtime(true))),
+            'datetime'   => DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-01 01:02:03'),
             'extra'      => [],
         ];
     }
