@@ -26,7 +26,6 @@ class LogDnaHandlerTest extends TestCase
         ]);
 
         $formatter = new SmartJsonFormatter;
-        $formatter->includeStacktraces(true);
 
         $handler = new LogDnaHandler('test', 'test');
         $handler->setHttpClient($mockHttpClient);
