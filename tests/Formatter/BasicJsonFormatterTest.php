@@ -14,19 +14,9 @@ class BasicJsonFormatterTest extends TestCase
     {
         $record = $this->getRecord(Logger::INFO, 'This is a test message', ['FOO' => 'BAR']);
 
-        $this->assertSame(
-            json_encode([
-                'lines' => [
-                    [
-                        'timestamp' => $record['datetime']->getTimestamp(),
-                        'line'      => $record['message'],
-                        'app'       => $record['channel'],
-                        'level'     => $record['level_name'],
-                        'meta'      => $record['context'],
-                    ],
-                ],
-            ]),
-            trim((new BasicJsonFormatter)->format($record))
+        $this->assertJsonStringEqualsJsonFile(
+            __DIR__ . '/../fixtures/basic-json-formatter-format.json',
+            (new BasicJsonFormatter)->format($record)
         );
     }
 }
