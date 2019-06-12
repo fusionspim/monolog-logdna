@@ -14,7 +14,7 @@
                     "trace": [
                         {
                             "class": "MyClass",
-                            "function": null,
+                            "function": "baz",
                             "args": [
                                 "bool(true)",
                                 "bool(false)",
@@ -30,7 +30,7 @@
                         },
                         {
                             "class": "MyNestedClass",
-                            "function": null,
+                            "function": "bar",
                             "args": [
                                 "string(FOO)",
                                 "string(BAR)"
@@ -41,7 +41,7 @@
                         },
                         {
                             "class": "MyVendorClass",
-                            "function": null,
+                            "function": "foo",
                             "args": [],
                             "type": "method",
                             "file": "\/my\/fake\/path\/vendor\/MyVendorClass.php",
