@@ -80,6 +80,7 @@ class SmartJsonFormatterTest extends TestCase
         $output = json_decode($formatter->format($record), true);
 
         $this->assertCount(3, $output['lines'][0]['meta']['exception']['trace']);
+
         foreach ($output['lines'][0]['meta']['exception']['trace'] as $trace) {
             $this->assertStringNotContainsString($excludedPath, $trace['file']);
         }
