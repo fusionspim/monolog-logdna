@@ -66,6 +66,10 @@ class SmartJsonFormatter extends BasicJsonFormatter
                 'file'     => $file,
                 'line'     => ($frame['line'] ?? ''),
             ];
+
+            if (count($stack) >= 50) {
+                break;
+            }
         }
 
         return $stack;

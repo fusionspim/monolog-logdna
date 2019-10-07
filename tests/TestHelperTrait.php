@@ -25,9 +25,9 @@ trait TestHelperTrait
         ];
     }
 
-    public function getExceptionWithStackTrace(string $message = '', int $code = 0, Throwable $previous = null): Exception
+    public function getExceptionWithStackTrace(string $message = '', int $code = 0, Throwable $previous = null, array $trace = null): Exception
     {
-        return new StackTraceTestException($message, $code, $previous, [
+        return new StackTraceTestException($message, $code, $previous, $trace ?? [
             [
                 'class'    => 'MyClass',
                 'function' => 'baz',
