@@ -81,11 +81,11 @@ class SmartJsonFormatter extends BasicJsonFormatter
             return 'function';
         }
 
-        if ($frame['type'] == '::') {
+        if ($frame['type'] === '::') {
             return 'static';
         }
 
-        if ($frame['type'] == '->') {
+        if ($frame['type'] === '->') {
             return 'method';
         }
     }

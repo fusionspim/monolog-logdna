@@ -1,7 +1,7 @@
 <?php
 namespace Fusions\Test\Monolog\LogDna;
 
-use DateTime;
+use DateTimeImmutable;
 use Exception;
 use Monolog\Logger;
 use stdClass;
@@ -20,7 +20,7 @@ trait TestHelperTrait
             'level'      => $level,
             'level_name' => Logger::getLevelName($level),
             'channel'    => 'test',
-            'datetime'   => DateTime::createFromFormat('Y-m-d H:i:s', '2019-01-01 01:02:03'),
+            'datetime'   => DateTimeImmutable::createFromFormat('Y-m-d H:i:s', '2019-01-01 01:02:03'),
             'extra'      => [],
         ];
     }

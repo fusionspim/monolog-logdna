@@ -38,5 +38,7 @@ blocks:
           - env_var: PHP_VERSION
             values: ["7.2.10", "7.3.0"] # Be explicit, even when using the default (in case the default changes)
         commands:
-          - php-cs-fixer fix --config=.php_cs.dist --dry-run --diff -v # Too few files to restrict via CHANGED_FILES
+          - cache restore php-cs-fixer-cache
+          - php-cs-fixer fix --config=.php_cs.dist --dry-run --diff -v --stop-on-violation
+          - cache store php-cs-fixer-cache .php_cs.cache
           - phpunit --stop-on-failure
