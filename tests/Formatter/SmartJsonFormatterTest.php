@@ -111,7 +111,7 @@ class SmartJsonFormatterTest extends TestCase
         $formatter = new SmartJsonFormatter;
         $formatter->setStackTrackLimit(50);
         $formatted = $formatter->format($record);
-        $output = json_decode($formatted, true);
+        $output    = json_decode($formatted, true);
 
         $this->assertTrue(mb_strlen($formatted) < 32000); // Output lower than LogDNA limit
         $this->assertCount(50, $output['lines'][0]['meta']['exception']['trace']);
