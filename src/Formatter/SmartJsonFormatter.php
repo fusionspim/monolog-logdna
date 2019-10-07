@@ -5,6 +5,7 @@ class SmartJsonFormatter extends BasicJsonFormatter
 {
     protected $includeStacktraces = true;
     private $ignorePaths          = [];
+    private $stackTraceLimit      = null;
 
     /**
      * Ignore paths are paths to code that will be excluded from the log stack trace output.
@@ -14,6 +15,14 @@ class SmartJsonFormatter extends BasicJsonFormatter
     public function setIgnorePaths(array $ignorePaths): void
     {
         $this->ignorePaths = $ignorePaths;
+    }
+
+    /**
+     * To limit the size of the output you can set a stack trace limit.
+     */
+    public function setStackTrackLimit(int $limit): void
+    {
+        $this->stackTraceLimit = $limit;
     }
 
     /*
@@ -67,7 +76,7 @@ class SmartJsonFormatter extends BasicJsonFormatter
                 'line'     => ($frame['line'] ?? ''),
             ];
 
-            if (count($stack) >= 50) {
+            if ($this->stackTraceLimit !== null && count($stack) > $this->stackTraceLimit) {
                 break;
             }
         }

@@ -109,6 +109,7 @@ class SmartJsonFormatterTest extends TestCase
         ]);
 
         $formatter = new SmartJsonFormatter;
+        $formatter->setStackTrackLimit(50);
         $formatted = $formatter->format($record);
         $output = json_decode($formatted, true);
 
