@@ -76,7 +76,7 @@ class SmartJsonFormatter extends BasicJsonFormatter
                 'line'     => ($frame['line'] ?? ''),
             ];
 
-            if ($this->stackTraceLimit !== null && count($stack) > $this->stackTraceLimit) {
+            if ($this->stackTraceLimit !== null && count($stack) >= $this->stackTraceLimit) {
                 break;
             }
         }
