@@ -15,6 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 class LogDnaHandler extends AbstractProcessingHandler
 {
     public const LOGDNA_INGESTION_URL = 'https://logs.logdna.com/logs/ingest';
+    public const LOGDNA_BYTE_LIMIT    = 30000;
 
     private $ingestionKey = '';
     private $hostName     = '';
@@ -68,6 +69,26 @@ class LogDnaHandler extends AbstractProcessingHandler
 
     public function write(array $record)
     {
+        $body = $record['formatted'];
+
+        if (mb_strlen($body) > static::LOGDNA_BYTE_LIMIT) {
+            $decodedBody = json_decode($body, true);
+
+            $body = json_encode([
+                'lines' => [
+                    [
+                        'timestamp' => $decodedBody['lines'][0]['timestamp'] ?? '',
+                        'line'      => $decodedBody['lines'][0]['line'] ?? '',
+                        'app'       => $decodedBody['lines'][0]['app'] ?? '',
+                        'level'     => $decodedBody['lines'][0]['level'] ?? '',
+                        'meta'      => [
+                            'longException' => mb_substr($body, 0, static::LOGDNA_BYTE_LIMIT),
+                        ],
+                    ],
+                ],
+            ]);
+        }
+
         $this->lastResponse = $this->getHttpClient()->request('POST', static::LOGDNA_INGESTION_URL, [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -82,7 +103,7 @@ class LogDnaHandler extends AbstractProcessingHandler
                 'now'      => $record['datetime']->getTimestamp(),
                 'tags'     => $this->tags,
             ],
-            'body' => $record['formatted'],
+            'body' => $body,
         ]);
 
         return false === $this->bubble;
