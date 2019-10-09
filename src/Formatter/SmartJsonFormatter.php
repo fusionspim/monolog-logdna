@@ -18,6 +18,7 @@ class SmartJsonFormatter extends BasicJsonFormatter
     }
 
     /**
+     * @deprecated
      * To limit the size of the output you can set a stack trace limit.
      */
     public function setStackTrackLimit(int $limit): void
