@@ -24,6 +24,7 @@ class LogDnaHandler extends AbstractProcessingHandler
     private $tags         = [];
     private $httpClient;
     private $lastResponse;
+    private $lastBody;
 
     public function __construct(string $ingestionKey, string $hostName, $level = Logger::DEBUG, $bubble = true)
     {
@@ -89,6 +90,8 @@ class LogDnaHandler extends AbstractProcessingHandler
             ]);
         }
 
+        $this->lastBody = $body;
+
         $this->lastResponse = $this->getHttpClient()->request('POST', static::LOGDNA_INGESTION_URL, [
             'headers' => [
                 'Content-Type' => 'application/json',
@@ -112,5 +115,10 @@ class LogDnaHandler extends AbstractProcessingHandler
     public function getLastResponse(): ResponseInterface
     {
         return $this->lastResponse;
+    }
+
+    public function getLastBody(): string
+    {
+        return $this->lastBody;
     }
 }
