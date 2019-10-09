@@ -1,7 +1,7 @@
 {
   "lines": [
     {
-      "timestamp": 100000000,
+      "timestamp": "--IGNORED--",
       "line": "This is a test message",
       "app": "test",
       "level": "INFO",
@@ -10,7 +10,7 @@
           "class": "Fusions\\Test\\Monolog\\LogDna\\StackTraceTestException",
           "message": "",
           "code": 0,
-          "file": "/var/www/vhosts/monolog-logdna/tests/TestHelperTrait.php:30",
+          "file": "--IGNORED--",
           "trace": [
             {
               "class": "MyClass",
@@ -25,7 +25,7 @@
                 "stdClass"
               ],
               "type": "method",
-              "file": "/my/fake/path/src/MyClass.php",
+              "file": "--IGNORED--",
               "line": 256
             },
             {
@@ -36,7 +36,7 @@
                 "string(BAR)"
               ],
               "type": "static",
-              "file": "/my/fake/path/src/Nested/MyNestedClass.php",
+              "file": "--IGNORED--",
               "line": 512
             },
             {
@@ -44,7 +44,7 @@
               "function": "foo",
               "args": [],
               "type": "method",
-              "file": "/my/fake/path/vendor/MyVendorClass.php",
+              "file": "--IGNORED--",
               "line": 123
             },
             {
@@ -52,7 +52,7 @@
               "function": "require",
               "args": [],
               "type": "function",
-              "file": "/my/fake/path/require.php",
+              "file": "--IGNORED--",
               "line": 42
             }
           ]

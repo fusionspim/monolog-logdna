@@ -46,9 +46,10 @@ class LogDnaHandlerTest extends TestCase
         $response = $handler->getLastResponse();
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame('{ "status": "ok" }', $response->getBody()->getContents());
-        $this->assertJsonStringEqualsJsonFile(
+        $this->assertJsonFileEqualsJsonStringIgnoring(
             __DIR__ . '/../fixtures/logdna-body.json',
-            $this->removeBodyTimestamps($handler->getLastBody())
+            $handler->getLastBody(),
+            ['timestamp', 'file']
         );
     }
 
@@ -95,14 +96,36 @@ class LogDnaHandlerTest extends TestCase
         $response = $handler->getLastResponse();
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame('{ "status": "ok" }', $response->getBody()->getContents());
-        $this->assertJsonStringEqualsJsonFile(
+        $this->assertJsonFileEqualsJsonStringIgnoring(
             __DIR__ . '/../fixtures/long-logdna-body.json',
-            $this->removeBodyTimestamps($handler->getLastBody())
+            $handler->getLastBody(),
+            ['timestamp', 'file', 'longException']
+        );
+
+        $decodedBody = json_decode($handler->getLastBody(), true);
+        $this->assertSame(30000, mb_strlen($decodedBody['lines'][0]['meta']['longException'], '8bit'));
+
+    }
+
+    public function assertJsonFileEqualsJsonStringIgnoring(string $expectedFile, string $json, array $ignoring = [])
+    {
+        $this->assertJsonStringEqualsJsonString(
+            file_get_contents($expectedFile),
+            json_encode($this->removeKeys(json_decode($json, true), $ignoring))
         );
     }
 
-    public function removeBodyTimestamps($body)
-    {
-        return preg_replace('/:[0-9]{9,15}+,/', ':100000000,', $body);
+    public function removeKeys(array $data, array $keys) {
+        $newData = [];
+
+        foreach ($data as $key => $item) {
+            if (! in_array($key, $keys, true)) {
+                $newData[$key] = is_array($item) ? $this->removeKeys($item, $keys) : $item;
+            } else {
+                $newData[$key] = '--IGNORED--';
+            }
+        }
+
+        return $newData;
     }
 }
