@@ -1,0 +1,13 @@
+{
+  "lines": [
+    {
+      "timestamp": "--IGNORED--",
+      "line": "This is a test message",
+      "app": "test",
+      "level": "INFO",
+      "meta": {
+        "longException": "--IGNORED--"
+      }
+    }
+  ]
+}
