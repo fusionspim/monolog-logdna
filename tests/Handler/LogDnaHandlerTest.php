@@ -104,10 +104,9 @@ class LogDnaHandlerTest extends TestCase
 
         $decodedBody = json_decode($handler->getLastBody(), true);
         $this->assertSame(30000, mb_strlen($decodedBody['lines'][0]['meta']['longException'], '8bit'));
-
     }
 
-    public function assertJsonFileEqualsJsonStringIgnoring(string $expectedFile, string $json, array $ignoring = [])
+    public function assertJsonFileEqualsJsonStringIgnoring(string $expectedFile, string $json, array $ignoring = []): void
     {
         $this->assertJsonStringEqualsJsonString(
             file_get_contents($expectedFile),
@@ -115,7 +114,8 @@ class LogDnaHandlerTest extends TestCase
         );
     }
 
-    public function removeKeys(array $data, array $keys) {
+    public function removeKeys(array $data, array $keys)
+    {
         $newData = [];
 
         foreach ($data as $key => $item) {
