@@ -72,7 +72,7 @@ class LogDnaHandler extends AbstractProcessingHandler
     {
         $body = $record['formatted'];
 
-        if (mb_strlen($body) > static::LOGDNA_BYTE_LIMIT) {
+        if (mb_strlen($body, '8bit') > static::LOGDNA_BYTE_LIMIT) {
             $decodedBody = json_decode($body, true);
 
             $body = json_encode([
@@ -83,7 +83,7 @@ class LogDnaHandler extends AbstractProcessingHandler
                         'app'       => $decodedBody['lines'][0]['app'] ?? '',
                         'level'     => $decodedBody['lines'][0]['level'] ?? '',
                         'meta'      => [
-                            'longException' => mb_substr($body, 0, static::LOGDNA_BYTE_LIMIT),
+                            'longException' => mb_substr($body, 0, static::LOGDNA_BYTE_LIMIT, '8bit'),
                         ],
                     ],
                 ],
