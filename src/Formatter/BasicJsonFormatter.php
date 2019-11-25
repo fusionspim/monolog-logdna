@@ -5,7 +5,7 @@ use Monolog\Formatter\JsonFormatter;
 
 class BasicJsonFormatter extends JsonFormatter
 {
-    public function format(array $record)
+    public function format(array $record): string
     {
         return parent::format([
             'lines' => [
