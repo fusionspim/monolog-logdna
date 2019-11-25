@@ -1,5 +1,6 @@
 <?php
 namespace Fusions\Monolog\LogDna\Formatter;
+
 use Throwable;
 
 class SmartJsonFormatter extends BasicJsonFormatter
