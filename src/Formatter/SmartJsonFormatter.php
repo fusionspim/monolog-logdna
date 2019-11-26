@@ -1,6 +1,8 @@
 <?php
 namespace Fusions\Monolog\LogDna\Formatter;
 
+use Throwable;
+
 class SmartJsonFormatter extends BasicJsonFormatter
 {
     protected $includeStacktraces = true;
@@ -31,7 +33,7 @@ class SmartJsonFormatter extends BasicJsonFormatter
      * a) We can control the volume of data being sent (LogDNA can only process 32000 bytes).
      * b) We can stop content being sent to LogDNA which causes their json parsing to break.
      */
-    protected function normalizeException($exception)
+    protected function normalizeException(Throwable $exception, int $depth = 0): array
     {
         $data = [
             'class'   => get_class($exception),

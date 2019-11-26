@@ -68,7 +68,7 @@ class LogDnaHandler extends AbstractProcessingHandler
         return new BasicJsonFormatter;
     }
 
-    public function write(array $record)
+    public function write(array $record): void
     {
         $body = $record['formatted'];
 
@@ -108,8 +108,6 @@ class LogDnaHandler extends AbstractProcessingHandler
             ],
             'body' => $body,
         ]);
-
-        return false === $this->bubble;
     }
 
     public function getLastResponse(): ResponseInterface
