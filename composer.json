@@ -10,8 +10,8 @@
         "fusionspim/php-cs-fixer-config": "^4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.1",
-        "symfony/var-dumper": "^4.3"
+        "symfony/var-dumper": "^4.3",
+        "phpunit/phpunit": "^9.0.0"
     },
     "license": "MIT",
     "authors": [
