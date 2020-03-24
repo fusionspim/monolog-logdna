@@ -13,13 +13,10 @@ blocks:
     task:
       prologue:
         commands:
-          - sem-version php $PHP_VERSION
+          - sem-version php 7.3.0
           - checkout
       jobs:
       - name: Composer install
-        matrix:
-          - env_var: PHP_VERSION
-            values: ["7.2.10", "7.3.0"] # Be explicit, even when using the default (in case the default changes)
         commands:
           - cache restore composer-$SEMAPHORE_GIT_BRANCH-$(checksum composer.lock),composer-$SEMAPHORE_GIT_BRANCH,composer-master
           - composer install --prefer-dist --no-suggest --no-interaction
@@ -28,15 +25,12 @@ blocks:
     task:
       prologue:
         commands:
-          - sem-version php $PHP_VERSION
+          - sem-version php 7.3.0
           - checkout
           - cache restore composer-$SEMAPHORE_GIT_BRANCH-$(checksum composer.lock),composer-$SEMAPHORE_GIT_BRANCH,composer-master
           - export "PATH=./vendor/bin:${PATH}" # Prepend vendor/bin to the path so we can use dependency executables
       jobs:
       - name: Tests
-        matrix:
-          - env_var: PHP_VERSION
-            values: ["7.2.10", "7.3.0"] # Be explicit, even when using the default (in case the default changes)
         commands:
           - cache restore php-cs-fixer-cache
           - php-cs-fixer fix --config=.php_cs.dist --dry-run --diff -v --stop-on-violation
