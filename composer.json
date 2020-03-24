@@ -3,7 +3,7 @@
     "description": "A Monolog handler and formatter for LogDNA",
     "type": "library",
     "require": {
-        "php": ">=7.2",
+        "php": "^7.3",
         "ext-json": "*",
         "monolog/monolog": "^2.0",
         "guzzlehttp/guzzle": "^6.3"
