@@ -5,34 +5,19 @@ agent:
   machine:
     type: e1-standard-2
     os_image: ubuntu1804
-execution_time_limit:
-  minutes: 15 # Default is 1 hour
 
 blocks:
-  - name: Setup
+  - name: Everything
     task:
-      prologue:
-        commands:
-          - phpbrew use php-7.4.6
-          - checkout
       jobs:
-      - name: Composer install
-        commands:
-          - cache restore composer-$SEMAPHORE_GIT_BRANCH-$(checksum composer.lock),composer-$SEMAPHORE_GIT_BRANCH,composer-master
-          - composer install --prefer-dist --no-suggest --no-interaction
-          - cache store composer-$SEMAPHORE_GIT_BRANCH-$(checksum composer.lock) vendor
-  - name: Tests
-    task:
-      prologue:
-        commands:
-          - phpbrew use php-7.4.6
-          - checkout
-          - cache restore composer-$SEMAPHORE_GIT_BRANCH-$(checksum composer.lock),composer-$SEMAPHORE_GIT_BRANCH,composer-master
-          - export "PATH=./vendor/bin:${PATH}" # Prepend vendor/bin to the path so we can use dependency executables
-      jobs:
-      - name: Tests
-        commands:
-          - cache restore php-cs-fixer-cache
-          - php-cs-fixer fix --config=.php_cs.dist --dry-run --diff -v --stop-on-violation
-          - cache store php-cs-fixer-cache .php_cs.cache
-          - phpunit --stop-on-failure
+        - name: CS & unit tests
+          commands:
+            - phpbrew use php-7.4.6
+            - checkout
+            - cache restore # Composer dependencies
+            - export "PATH=./vendor/bin:${PATH}" # So we can use dependency executables
+            - composer install --prefer-dist --no-suggest --no-interaction
+            - php-cs-fixer fix --config=.php_cs.dist --dry-run --diff -v --stop-on-violation
+            - composer normalize --dry-run
+            - phpunit --stop-on-failure
+            - cache store
