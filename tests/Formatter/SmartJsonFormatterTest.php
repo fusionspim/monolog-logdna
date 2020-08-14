@@ -5,7 +5,6 @@ use Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter;
 use Fusions\Test\Monolog\LogDna\TestHelperTrait;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
-use stdClass;
 
 /**
  * @coversDefaultClass \Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter
