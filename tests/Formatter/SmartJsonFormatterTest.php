@@ -96,38 +96,4 @@ class SmartJsonFormatterTest extends TestCase
             $this->assertStringNotContainsString($excludedPath, $trace['file']);
         }
     }
-
-    /**
-     * @covers ::format
-     * @covers ::setStackTrackLimit
-     */
-    public function test_limit_long_traces(): void
-    {
-        $longTrace = [];
-
-        for ($i = 0; $i < 250; $i++) {
-            $longTrace[] = [
-                'class'    => 'MyClass',
-                'function' => 'baz',
-                'args'     => [true, false, 42, 42.42, 'FOO', ['FOO', 'BAR'], new stdClass],
-                'type'     => '->',
-                'file'     => '/my/fake/path/src/MyClass.php',
-                'line'     => 256,
-            ];
-        }
-
-        $this->assertTrue(mb_strlen(json_encode($longTrace)) > 32000); // Stacktrace bigger than LogDNA limit
-
-        $record = $this->getRecord(Logger::INFO, 'This is a test message', [
-            'exception' => $this->getExceptionWithStackTrace('This is a test exception', 42, null, $longTrace),
-        ]);
-
-        $formatter = new SmartJsonFormatter;
-        $formatter->setStackTrackLimit(50);
-        $formatted = $formatter->format($record);
-        $output    = json_decode($formatted, true);
-
-        $this->assertTrue(mb_strlen($formatted) < 32000); // Output lower than LogDNA limit
-        $this->assertCount(50, $output['lines'][0]['meta']['exception']['trace']);
-    }
 }
