@@ -7,10 +7,16 @@ use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
+/**
+ * @coversDefaultClass \Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter
+ */
 class SmartJsonFormatterTest extends TestCase
 {
     use TestHelperTrait;
 
+    /**
+     * @covers ::format
+     */
     public function test_format(): void
     {
         $record = $this->getRecord(Logger::INFO, 'This is a test message', [
@@ -68,6 +74,10 @@ class SmartJsonFormatterTest extends TestCase
         $this->assertSame([], $output['lines'][0]['meta']['exception']['trace'][3]['args']);
     }
 
+    /**
+     * @covers ::format
+     * @covers ::setIgnorePaths
+     */
     public function test_format_ignore_paths(): void
     {
         $excludedPath = '/my/fake/path/vendor';
@@ -87,6 +97,10 @@ class SmartJsonFormatterTest extends TestCase
         }
     }
 
+    /**
+     * @covers ::format
+     * @covers ::setStackTrackLimit
+     */
     public function test_limit_long_traces(): void
     {
         $longTrace = [];

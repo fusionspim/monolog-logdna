@@ -12,10 +12,22 @@ use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
+/**
+ * @coversDefaultClass \Fusions\Monolog\LogDna\Handler\LogDnaHandler
+ */
 class LogDnaHandlerTest extends TestCase
 {
     use TestHelperTrait;
 
+    /**
+     * @covers ::getLastBody
+     * @covers ::getLastResponse
+     * @covers ::setFormatter
+     * @covers ::setHttpClient
+     * @covers ::setIpAddress
+     * @covers ::setMacAddress
+     * @covers ::setTags
+     */
     public function test_write(): void
     {
         $mockHandler = new MockHandler([
@@ -53,6 +65,15 @@ class LogDnaHandlerTest extends TestCase
         );
     }
 
+    /**
+     * @covers ::getLastBody
+     * @covers ::getLastResponse
+     * @covers ::setFormatter
+     * @covers ::setHttpClient
+     * @covers ::setIpAddress
+     * @covers ::setMacAddress
+     * @covers ::setTags
+     */
     public function test_shorten_long_exceptions(): void
     {
         $mockHandler = new MockHandler([
