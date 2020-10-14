@@ -98,7 +98,7 @@ class LogDnaHandlerTest extends TestCase
 
         $longTrace = [];
 
-        while (mb_strlen(json_encode($longTrace), '8bit') <= 40_000) {
+        while (mb_strlen(json_encode($longTrace), '8bit') <= 50_000) {
             $longTrace[] = [
                 'class'    => 'MyClass',
                 'function' => 'baz',
@@ -109,11 +109,12 @@ class LogDnaHandlerTest extends TestCase
             ];
         }
 
+        $this->assertGreaterThan(20_000, mb_strlen(json_encode($longTrace), '8bit'));
+
         $logger->info('This is a test message', [
             'exception' => $this->getExceptionWithStackTrace('This is a test exception', 42, null, $longTrace),
         ]);
 
-        // Response.
         $response = $handler->getLastResponse();
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame('{ "status": "ok" }', $response->getBody()->getContents());
