@@ -15,7 +15,13 @@ use Psr\Http\Message\ResponseInterface;
 class LogDnaHandler extends AbstractProcessingHandler
 {
     public const LOGDNA_INGESTION_URL = 'https://logs.logdna.com/logs/ingest';
-    public const LOGDNA_BYTE_LIMIT    = 30000;
+
+    /**
+     * The documented limit is 32KB. In reality though anything over 25KB is lost forever,
+     * anything between 20KB to 25KB is saved but unparsed, and anything below 20KB is saved and parsed.
+     * We go slightly lower than 20KB for some leeway.
+     */
+    public const LOGDNA_BYTE_LIMIT    = 18_000;
 
     private $ingestionKey = '';
     private $hostName     = '';
