@@ -98,7 +98,7 @@ class LogDnaHandlerTest extends TestCase
 
         $longTrace = [];
 
-        for ($i = 0; $i < 250; $i++) {
+        while (mb_strlen(json_encode($longTrace), '8bit') <= 40_000) {
             $longTrace[] = [
                 'class'    => 'MyClass',
                 'function' => 'baz',
