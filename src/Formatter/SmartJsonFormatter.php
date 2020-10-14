@@ -107,18 +107,28 @@ class SmartJsonFormatter extends BasicJsonFormatter
     {
         if (is_array($arg)) {
             return 'array(' . implode(', ', array_map(fn ($arg) => $this->argToString($arg), $arg)) . ') ' . count($arg);
-        } elseif (is_object($arg)) {
-            return get_class($arg); // @todo: Detail public arguments, but only for classes in specific namespaces.
-        } elseif (is_string($arg)) {
-            return 'string(' . $arg . ')';
-        } elseif (is_int($arg)) {
-            return 'int(' . $arg . ')';
-        } elseif (is_float($arg)) {
-            return 'float(' . $arg . ')';
-        } elseif (is_bool($arg)) {
-            return 'bool(' . ($arg ? 'true' : 'false') . ')';
-        } else {
-            return (string) $arg;
         }
+
+        if (is_object($arg)) {
+            return get_class($arg); // @todo: Detail public arguments, but only for classes in specific namespaces.
+        }
+
+        if (is_string($arg)) {
+            return 'string(' . $arg . ')';
+        }
+
+        if (is_int($arg)) {
+            return 'int(' . $arg . ')';
+        }
+
+        if (is_float($arg)) {
+            return 'float(' . $arg . ')';
+        }
+
+        if (is_bool($arg)) {
+            return 'bool(' . ($arg ? 'true' : 'false') . ')';
+        }
+
+        return (string) $arg;
     }
 }
