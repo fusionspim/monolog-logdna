@@ -21,7 +21,7 @@
                 "int(42)",
                 "float(42.42)",
                 "string(FOO)",
-                "array(2)",
+                "array(string(FOO), string(BAR)) 2",
                 "stdClass"
               ],
               "type": "method",

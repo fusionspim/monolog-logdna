@@ -63,7 +63,7 @@ class SmartJsonFormatter extends BasicJsonFormatter
             $stack[] = [
                 'class'    => ($frame['class'] ?? ''),
                 'function' => $frame['function'],
-                'args'     => $this->argsToArray($frame),
+                'args'     => $this->frameArgsToArray($frame),
                 'type'     => $this->callToString($frame),
                 'file'     => $file,
                 'line'     => ($frame['line'] ?? ''),
@@ -88,7 +88,7 @@ class SmartJsonFormatter extends BasicJsonFormatter
         }
     }
 
-    private function argsToArray(array $frame): array
+    private function frameArgsToArray(array $frame): array
     {
         $params = [];
 
@@ -97,23 +97,28 @@ class SmartJsonFormatter extends BasicJsonFormatter
         }
 
         foreach ($frame['args'] as $arg) {
-            if (is_array($arg)) {
-                $params[] = 'array(' . count($arg) . ')';
-            } elseif (is_object($arg)) {
-                $params[] = get_class($arg);
-            } elseif (is_string($arg)) {
-                $params[] = 'string(' . $arg . ')';
-            } elseif (is_int($arg)) {
-                $params[] = 'int(' . $arg . ')';
-            } elseif (is_float($arg)) {
-                $params[] = 'float(' . $arg . ')';
-            } elseif (is_bool($arg)) {
-                $params[] = 'bool(' . ($arg ? 'true' : 'false') . ')';
-            } else {
-                $params[] = (string) $arg;
-            }
+            $params[] = $this->argToString($arg);
         }
 
         return $params;
+    }
+
+    private function argToString($arg): string
+    {
+        if (is_array($arg)) {
+            return 'array(' . implode(', ', array_map(fn ($arg) => $this->argToString($arg), $arg)) . ') ' . count($arg);
+        } elseif (is_object($arg)) {
+            return get_class($arg);
+        } elseif (is_string($arg)) {
+            return 'string(' . $arg . ')';
+        } elseif (is_int($arg)) {
+            return 'int(' . $arg . ')';
+        } elseif (is_float($arg)) {
+            return 'float(' . $arg . ')';
+        } elseif (is_bool($arg)) {
+            return 'bool(' . ($arg ? 'true' : 'false') . ')';
+        } else {
+            return (string) $arg;
+        }
     }
 }
