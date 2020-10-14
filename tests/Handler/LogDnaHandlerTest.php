@@ -124,7 +124,7 @@ class LogDnaHandlerTest extends TestCase
         );
 
         $decodedBody = json_decode($handler->getLastBody(), true);
-        $this->assertSame(30000, mb_strlen($decodedBody['lines'][0]['meta']['longException'], '8bit'));
+        $this->assertSame(20_000, mb_strlen($decodedBody['lines'][0]['meta']['longException'], '8bit'));
     }
 
     public function assertJsonFileEqualsJsonStringIgnoring(string $expectedFile, string $json, array $ignoring = []): void
