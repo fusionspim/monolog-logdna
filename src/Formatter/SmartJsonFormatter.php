@@ -108,7 +108,7 @@ class SmartJsonFormatter extends BasicJsonFormatter
         if (is_array($arg)) {
             return 'array(' . implode(', ', array_map(fn ($arg) => $this->argToString($arg), $arg)) . ') ' . count($arg);
         } elseif (is_object($arg)) {
-            return get_class($arg);
+            return get_class($arg); // @todo: Detail public arguments, but only for classes in specific namespaces.
         } elseif (is_string($arg)) {
             return 'string(' . $arg . ')';
         } elseif (is_int($arg)) {
