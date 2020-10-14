@@ -47,7 +47,7 @@ class SmartJsonFormatterTest extends TestCase
                 'int(42)',
                 'float(42.42)',
                 'string(FOO)',
-                'array([string(FOO), string(BAR)]), 2',
+                'array(length: 2, items: [string(FOO), string(BAR)])',
                 'stdClass',
             ],
             $output['lines'][0]['meta']['exception']['trace'][0]['args']

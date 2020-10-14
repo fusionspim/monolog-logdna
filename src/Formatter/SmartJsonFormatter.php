@@ -106,7 +106,7 @@ class SmartJsonFormatter extends BasicJsonFormatter
     private function argToString($arg): string
     {
         if (is_array($arg)) {
-            return 'array([' . implode(', ', array_map(fn ($arg) => $this->argToString($arg), $arg)) . ']), ' . count($arg);
+            return 'array(length: ' . count($arg) . ', items: [' . implode(', ', array_map(fn ($arg) => $this->argToString($arg), $arg)) . '])';
         }
 
         if (is_object($arg)) {
