@@ -15,13 +15,7 @@ use Psr\Http\Message\ResponseInterface;
 class LogDnaHandler extends AbstractProcessingHandler
 {
     public const LOGDNA_INGESTION_URL = 'https://logs.logdna.com/logs/ingest';
-
-    /**
-     * The documented limit is 32KB. In reality though anything over 25KB is lost forever,
-     * anything between 20KB to 25KB is saved but unparsed, and anything below 20KB is saved and parsed.
-     * We go slightly lower than 20KB for some leeway.
-     */
-    public const LOGDNA_BYTE_LIMIT    = 18_000;
+    public const LOGDNA_BYTE_LIMIT    = 30_000;
 
     private $ingestionKey = '';
     private $hostName     = '';
@@ -93,7 +87,7 @@ class LogDnaHandler extends AbstractProcessingHandler
                         ],
                     ],
                 ],
-            ]);
+            ], JSON_PRETTY_PRINT); // LogDNA seems to pretty format the JSON string sent, then check its byte size is under the 32KB limit, so we pretty print here to ensure we don't hit that.
         }
 
         $this->lastBody = $body;

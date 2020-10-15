@@ -109,7 +109,7 @@ class LogDnaHandlerTest extends TestCase
             ];
         }
 
-        $this->assertGreaterThan(20_000, mb_strlen(json_encode($longTrace), '8bit'));
+        $this->assertGreaterThan(30_000, mb_strlen(json_encode($longTrace), '8bit'));
 
         $logger->info('This is a test message', [
             'exception' => $this->getExceptionWithStackTrace('This is a test exception', 42, null, $longTrace),
@@ -125,7 +125,7 @@ class LogDnaHandlerTest extends TestCase
         );
 
         $decodedBody = json_decode($handler->getLastBody(), true);
-        $this->assertSame(18_000, mb_strlen($decodedBody['lines'][0]['meta']['longException'], '8bit'));
+        $this->assertSame(30_000, mb_strlen($decodedBody['lines'][0]['meta']['longException'], '8bit'));
     }
 
     public function assertJsonFileEqualsJsonStringIgnoring(string $expectedFile, string $json, array $ignoring = []): void
