@@ -94,7 +94,7 @@ class LogDnaHandler extends AbstractProcessingHandler
 
         $this->lastResponse = $this->getHttpClient()->request('POST', static::LOGDNA_INGESTION_URL, [
             'headers' => [
-                'Content-Type' => 'application/json',
+                'Content-Type' => 'application/json; charset=UTF-8',
             ],
             'auth' => [
                 $this->ingestionKey, '',
