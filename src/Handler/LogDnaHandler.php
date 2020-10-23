@@ -74,9 +74,9 @@ class LogDnaHandler extends AbstractProcessingHandler
 
         /**
          * We need to pretty print the metadata JSON before we check its the size, as LogDNA's 32KB limit applies to the
-         * number bytes of metadata **AFTER** LogDNA's API (Restify) has parsed and pretty formatted the JSON it.
+         * number bytes of metadata JSON **AFTER** LogDNA's API (Restify) has parsed and pretty formatted it.
          *
-         * It **DOES NOT* apply to the number of bytes actually sent in the API request, like you'd expect.
+         * It **DOES NOT* apply to the number of bytes actually sent in the API request as you'd expect.
          *
          * Essentially this is guess work on our part - we're hoping that the size of the JSON pretty printed is roughly
          * the same as the parsing process on LogDNA's end. It's the best we can do under the circumstances.
