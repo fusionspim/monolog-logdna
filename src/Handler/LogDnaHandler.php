@@ -95,7 +95,9 @@ class LogDnaHandler extends AbstractProcessingHandler
                         'level'     => $decodedBody['lines'][0]['level'] ?? '',
                         'meta'      => [
                             'truncated' => mb_substr(
-                                json_encode($decodedBody['lines'][0]['meta'], JSON_PRETTY_PRINT), 0, static::LOGDNA_META_DATA_LIMIT,
+                                json_encode($decodedBody['lines'][0]['meta'], JSON_PRETTY_PRINT),
+                                0,
+                                static::LOGDNA_META_DATA_LIMIT,
                                 '8bit'
                             ),
                         ],
