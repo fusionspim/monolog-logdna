@@ -14,14 +14,8 @@ use Psr\Http\Message\ResponseInterface;
  */
 class LogDnaHandler extends AbstractProcessingHandler
 {
-    public const LOGDNA_INGESTION_URL = 'https://logs.logdna.com/logs/ingest';
-
-    /**
-     * The documented limit is 32KB. In reality though anything over 25KB is lost forever,
-     * anything between 20KB to 25KB is saved but unparsed, and anything below 20KB is saved and parsed.
-     * We go slightly lower than 20KB for some leeway.
-     */
-    public const LOGDNA_BYTE_LIMIT    = 18_000;
+    public const LOGDNA_INGESTION_URL   = 'https://logs.logdna.com/logs/ingest';
+    public const LOGDNA_META_DATA_LIMIT = 30_000;
 
     private $ingestionKey = '';
     private $hostName     = '';
@@ -60,7 +54,7 @@ class LogDnaHandler extends AbstractProcessingHandler
         $this->httpClient = $httpClient;
     }
 
-    private function getHttpClient(): HttpClientInterface
+    protected function getHttpClient(): HttpClientInterface
     {
         if (! $this->httpClient) {
             $this->setHttpClient(new HttpClient(['timeout' => 5]));
@@ -78,9 +72,20 @@ class LogDnaHandler extends AbstractProcessingHandler
     {
         $body = $record['formatted'];
 
-        if (mb_strlen($body, '8bit') > static::LOGDNA_BYTE_LIMIT) {
-            $decodedBody = json_decode($body, true);
+        /**
+         * We need to pretty print the metadata JSON before we check its size, as LogDNA's 32KB limit applies to the
+         * number bytes of metadata JSON **AFTER** LogDNA's API (Restify) has parsed and pretty formatted it.
+         *
+         * It **DOES NOT** apply to the number of bytes actually sent in the API request as you'd expect.
+         *
+         * Essentially this is guess work on our part - we're hoping that the size of the JSON pretty printed is roughly
+         * the same as the parsing process on LogDNA's end. It's the best we can do under the circumstances.
+         *
+         * Confirmed the behaviour in ticket 10474.
+         */
+        $decodedBody = json_decode($body, true);
 
+        if (mb_strlen(json_encode($decodedBody['lines'][0]['meta'], JSON_PRETTY_PRINT), '8bit') > static::LOGDNA_META_DATA_LIMIT) {
             $body = json_encode([
                 'lines' => [
                     [
@@ -89,7 +94,12 @@ class LogDnaHandler extends AbstractProcessingHandler
                         'app'       => $decodedBody['lines'][0]['app'] ?? '',
                         'level'     => $decodedBody['lines'][0]['level'] ?? '',
                         'meta'      => [
-                            'longException' => mb_substr($body, 0, static::LOGDNA_BYTE_LIMIT, '8bit'),
+                            'truncated' => mb_substr(
+                                json_encode($decodedBody['lines'][0]['meta'], JSON_PRETTY_PRINT),
+                                0,
+                                static::LOGDNA_META_DATA_LIMIT,
+                                '8bit'
+                            ),
                         ],
                     ],
                 ],
@@ -100,7 +110,7 @@ class LogDnaHandler extends AbstractProcessingHandler
 
         $this->lastResponse = $this->getHttpClient()->request('POST', static::LOGDNA_INGESTION_URL, [
             'headers' => [
-                'Content-Type' => 'application/json',
+                'Content-Type' => 'application/json; charset=UTF-8',
             ],
             'auth' => [
                 $this->ingestionKey, '',

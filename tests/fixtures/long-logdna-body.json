@@ -6,7 +6,7 @@
       "app": "test",
       "level": "INFO",
       "meta": {
-        "longException": "--IGNORED--"
+        "truncated": "--IGNORED--"
       }
     }
   ]
