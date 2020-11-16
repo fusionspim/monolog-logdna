@@ -12,7 +12,7 @@ blocks:
       jobs:
         - name: CS & unit tests
           commands:
-            - sem-version php 7.4.6
+            - sem-version php 7.4
             - checkout
             - cache restore # Composer dependencies
             - export "PATH=./vendor/bin:${PATH}" # So we can use dependency executables
