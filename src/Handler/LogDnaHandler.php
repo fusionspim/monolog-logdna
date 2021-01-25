@@ -10,7 +10,7 @@ use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
 
 /**
- * @link: https://docs.logdna.com/reference#logsingest
+ * @see: https://docs.logdna.com/reference#logsingest
  */
 class LogDnaHandler extends AbstractProcessingHandler
 {
