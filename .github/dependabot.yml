@@ -3,8 +3,9 @@ version: 2
 # https://docs.github.com/en/github/administering-a-repository/configuration-options-for-dependency-updates
 updates:
   - package-ecosystem: "composer"
+    open-pull-requests-limit: 1
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     labels:
       - "Dependencies"

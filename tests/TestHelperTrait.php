@@ -10,7 +10,7 @@ use Throwable;
 trait TestHelperTrait
 {
     /**
-     * @link https://github.com/Seldaek/monolog/blob/1.x/tests/Monolog/TestCase.php
+     * @see https://github.com/Seldaek/monolog/blob/1.x/tests/Monolog/TestCase.php
      */
     public function getRecord(int $level = Logger::WARNING, string $message = 'test', array $context = []): array
     {
