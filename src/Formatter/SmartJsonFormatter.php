@@ -5,17 +5,20 @@ use Throwable;
 
 class SmartJsonFormatter extends BasicJsonFormatter
 {
-    protected $includeStacktraces = true;
-    private $ignorePaths          = [];
+    protected $includeStacktraces  = true;
+    protected $stackTraceModifiers = [];
 
     /**
-     * Ignore paths are paths to code that will be excluded from the log stack trace output.
-     * This is useful when you have deep stacks (e.g.  middleware) that isn't relevant to the log output.
-     * It also helps keep the JSON size down.
+     * Stack trace modifier functions allow frames to be modified or omitted from the final trace.
+     *
+     * This can be useful to exclude frame based on their file paths, for when you have deep stacks (e.g.  middleware)
+     * that aren't relevant to your log output.
+     *
+     * It can also be useful to remove sensitive arguments from frames such as database credentials.
      */
-    public function setIgnorePaths(array $ignorePaths): void
+    public function addStackTraceModifier(callable $fn): void
     {
-        $this->ignorePaths = $ignorePaths;
+        $this->stackTraceModifiers[] = $fn;
     }
 
     /*
@@ -48,26 +51,29 @@ class SmartJsonFormatter extends BasicJsonFormatter
         $stack = [];
 
         foreach ($trace as $frame) {
-            $file = ($frame['file'] ?? '');
-
-            if (empty($file)) {
-                continue;
-            }
-
-            foreach ($this->ignorePaths as $name) {
-                if (mb_strpos($file, $name) !== false) {
-                    continue 2;
-                }
-            }
-
-            $stack[] = [
+            $frame = [
                 'class'    => ($frame['class'] ?? ''),
                 'function' => $frame['function'],
                 'args'     => $this->argsToArray($frame),
                 'type'     => $this->callToString($frame),
-                'file'     => $file,
+                'file'     => ($frame['file'] ?? ''),
                 'line'     => ($frame['line'] ?? ''),
             ];
+
+            if (empty($frame['file'])) {
+                continue;
+            }
+
+            foreach ($this->stackTraceModifiers as $stackTraceModifier) {
+                $frame = call_user_func($stackTraceModifier, $frame);
+
+                // If null, false, malformed or empty frame is returned then omit from the stack trace entirely.
+                if (! is_array($frame) || empty($frame)) {
+                    continue 2;
+                }
+            }
+
+            $stack[] = $frame;
         }
 
         return $stack;
