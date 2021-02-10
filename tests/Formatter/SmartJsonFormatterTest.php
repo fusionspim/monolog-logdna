@@ -135,7 +135,7 @@ class SmartJsonFormatterTest extends TestCase
                         'password',
                         [2 => true],
                         42,
-                        42.22,
+                        42.42,
                         new \stdClass,
                     ],
                     'type'     => '->',
@@ -172,7 +172,14 @@ class SmartJsonFormatterTest extends TestCase
                 ],
                 [
                     'function' => 'prepareDatabase',
-                    'args'     => [],
+                    'args'     => [
+                        'foo',
+                        'bar',
+                        [2 => true],
+                        42,
+                        42.42,
+                        new \stdClass,
+                    ],
                     'file'     => '/my/fake/path/prepare.php',
                     'line'     => 42,
                 ],
@@ -212,7 +219,14 @@ class SmartJsonFormatterTest extends TestCase
                 'array(***REDACTED***)',
                 'array(***REDACTED***)',
             ],
-            [],
+            [
+                'string(foo)',
+                'string(bar)',
+                'array(1)',
+                'int(42)',
+                'float(42.42)',
+                'stdClass',
+            ],
             [],
         ];
 
