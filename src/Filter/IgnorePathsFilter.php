@@ -1,7 +1,7 @@
 <?php
-namespace Fusions\Monolog\LogDna\Modifier;
+namespace Fusions\Monolog\LogDna\Filter;
 
-class IgnorePathsModifier
+class IgnorePathsFilter
 {
     protected array $ignorePaths = [];
 
@@ -21,14 +21,14 @@ class IgnorePathsModifier
         $this->ignorePaths = $ignorePaths;
     }
 
-    public function __invoke(array $frame): ?array
+    public function __invoke(array $frame): bool
     {
         foreach ($this->ignorePaths as $path) {
             if (mb_strpos($frame['file'], $path) !== false) {
-                return null;
+                return false;
             }
         }
 
-        return $frame;
+        return true;
     }
 }

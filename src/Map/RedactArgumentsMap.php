@@ -1,7 +1,7 @@
 <?php
-namespace Fusions\Monolog\LogDna\Modifier;
+namespace Fusions\Monolog\LogDna\Map;
 
-class RedactArgumentsModifier
+class RedactArgumentsMap
 {
     protected array $redactFrameArguments = [];
 

@@ -1,9 +1,9 @@
 <?php
 namespace Fusions\Test\Monolog\LogDna\Formatter;
 
+use Fusions\Monolog\LogDna\Filter\IgnorePathsFilter;
 use Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter;
-use Fusions\Monolog\LogDna\Modifier\IgnorePathsModifier;
-use Fusions\Monolog\LogDna\Modifier\RedactArgumentsModifier;
+use Fusions\Monolog\LogDna\Map\RedactArgumentsMap;
 use Fusions\Test\Monolog\LogDna\TestHelperTrait;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
@@ -89,7 +89,7 @@ class SmartJsonFormatterTest extends TestCase
         ]);
 
         $formatter = new SmartJsonFormatter;
-        $formatter->addStackTraceModifier(new IgnorePathsModifier([$excludedPath]));
+        $formatter->addFilter(new IgnorePathsFilter([$excludedPath]));
         $output = json_decode($formatter->format($record), true);
 
         $this->assertCount(3, $output['lines'][0]['meta']['exception']['trace']);
@@ -193,7 +193,7 @@ class SmartJsonFormatterTest extends TestCase
         ]);
 
         $formatter = new SmartJsonFormatter;
-        $formatter->addStackTraceModifier(new RedactArgumentsModifier($redactedFrameArguments));
+        $formatter->addMap(new RedactArgumentsMap($redactedFrameArguments));
         $output = json_decode($formatter->format($record), true);
 
         $this->assertCount(5, $output['lines'][0]['meta']['exception']['trace']);

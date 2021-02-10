@@ -5,20 +5,18 @@ use Throwable;
 
 class SmartJsonFormatter extends BasicJsonFormatter
 {
-    protected $includeStacktraces  = true;
-    protected $stackTraceModifiers = [];
+    protected $includeStacktraces = true;
+    protected $maps               = [];
+    protected $filters            = [];
 
-    /**
-     * Stack trace modifier functions allow frames to be modified or omitted from the final trace.
-     *
-     * This can be useful to exclude frame based on their file paths, for when you have deep stacks (e.g.  middleware)
-     * that aren't relevant to your log output.
-     *
-     * It can also be useful to remove sensitive arguments from frames such as database credentials.
-     */
-    public function addStackTraceModifier(callable $fn): void
+    public function addMap(callable $fn): void
     {
-        $this->stackTraceModifiers[] = $fn;
+        $this->maps[] = $fn;
+    }
+
+    public function addFilter(callable $fn): void
+    {
+        $this->filters[] = $fn;
     }
 
     /*
@@ -64,16 +62,15 @@ class SmartJsonFormatter extends BasicJsonFormatter
                 continue;
             }
 
-            foreach ($this->stackTraceModifiers as $stackTraceModifier) {
-                $frame = call_user_func($stackTraceModifier, $frame);
-
-                // If null, false, malformed or empty frame is returned then omit from the stack trace entirely.
-                if (! is_array($frame) || empty($frame)) {
-                    continue 2;
-                }
-            }
-
             $stack[] = $frame;
+        }
+
+        foreach ($this->maps as $map) {
+            $stack = array_map($map, $stack);
+        }
+
+        foreach ($this->filters as $filter) {
+            $stack = array_filter($stack, $filter);
         }
 
         return $stack;
