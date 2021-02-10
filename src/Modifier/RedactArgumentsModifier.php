@@ -5,9 +5,23 @@ class RedactArgumentsModifier
 {
     protected array $redactFrameArguments = [];
 
+    /**
+     * Redact arguments from stack trace frames belonging to a specific class method or function.
+     * This is useful for excluding sensitive database credentials from log output.
+     *
+     * Accepts an array of arrays with the class, function and type keys to match the frame on:
+     * [
+     *     ['class' => 'PDO', 'function' => '__construct', 'type' => 'method'],
+     *     [...],
+     * ]
+     */
     public function __construct(array $redactFrameArguments)
     {
-        $this->redactFrameArguments = $redactFrameArguments;
+        foreach ($redactFrameArguments as $redactFrameArgument) {
+            if (isset($redactFrameArgument['class'], $redactFrameArgument['function'], $redactFrameArgument['type'])) {
+                $this->redactFrameArguments[] = $redactFrameArgument;
+            }
+        }
     }
 
     public function __invoke(array $frame): ?array
