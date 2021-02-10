@@ -70,6 +70,8 @@ You can add maps and filters using `addMap()` and `addFilter()`. Each accepts a 
 Maps are applied first and should return an array. Filters are applied last and should return a boolean. Both are applied in the order they were added to the formatter.
 
 ```
+use Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter;
+
 $formatter = new SmartJsonFormatter;
 
 // Modify the stack trace frame to include an extra field.
@@ -84,12 +86,18 @@ $formatter->addFilter(fn (array $frame): bool => count($frame['args']) > 0);
 
 An `IgnorePathsFilter` class is included which removes specific paths from stack traces. You can use this to exclude vendor or middleware components from your stack trace:
 ```
+use Fusions\Monolog\LogDna\Filter\IgnorePathsFilter;
+use Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter;
+
 $formatter = new SmartJsonFormatter;
-$formatter->addFilter(new IgnorePathsFilter(['/path/to/vendor']));
+$formatter->addFilter(new use IgnorePathsFilter(['/path/to/vendor']));
 ```
 
 A `RedactArgumentsMap` class is also included which redacts sensitive arguments from matching frames. You can use this to redact database credentials from your stack trace:
 ```
+use Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter;
+use Fusions\Monolog\LogDna\Map\RedactArgumentsMap;
+
 $formatter = new SmartJsonFormatter;
 $formatter->addMap(new RedactArgumentsMap([
     [
