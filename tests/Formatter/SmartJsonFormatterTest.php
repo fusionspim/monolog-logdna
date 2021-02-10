@@ -199,18 +199,18 @@ class SmartJsonFormatterTest extends TestCase
                 'array(***REDACTED***)',
                 'int(***REDACTED***)',
                 'float(***REDACTED***)',
-                'stdClass'
+                'stdClass',
             ],
             [
                 'string(***REDACTED***)',
                 'string(***REDACTED***)',
                 'string(***REDACTED***)',
-                'array(***REDACTED***)'
+                'array(***REDACTED***)',
             ],
             [
                 'string(***REDACTED***)',
                 'array(***REDACTED***)',
-                'array(***REDACTED***)'
+                'array(***REDACTED***)',
             ],
             [],
             [],
