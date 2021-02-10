@@ -134,6 +134,9 @@ class SmartJsonFormatterTest extends TestCase
                         'username',
                         'password',
                         [2 => true],
+                        42,
+                        42.22,
+                        new \stdClass,
                     ],
                     'type'     => '->',
                     'file'     => '/vendor/illuminate/database/Connectors/Connector.php',
@@ -189,9 +192,26 @@ class SmartJsonFormatterTest extends TestCase
         $this->assertCount(5, $output['lines'][0]['meta']['exception']['trace']);
 
         $expectedArguments = [
-            ['string(***REDACTED***)', 'string(***REDACTED***)', 'string(***REDACTED***)', 'string(***REDACTED***)'],
-            ['string(***REDACTED***)', 'string(***REDACTED***)', 'string(***REDACTED***)', 'string(***REDACTED***)'],
-            ['string(***REDACTED***)', 'string(***REDACTED***)', 'string(***REDACTED***)'],
+            [
+                'string(***REDACTED***)',
+                'string(***REDACTED***)',
+                'string(***REDACTED***)',
+                'array(***REDACTED***)',
+                'int(***REDACTED***)',
+                'float(***REDACTED***)',
+                'stdClass'
+            ],
+            [
+                'string(***REDACTED***)',
+                'string(***REDACTED***)',
+                'string(***REDACTED***)',
+                'array(***REDACTED***)'
+            ],
+            [
+                'string(***REDACTED***)',
+                'array(***REDACTED***)',
+                'array(***REDACTED***)'
+            ],
             [],
             [],
         ];

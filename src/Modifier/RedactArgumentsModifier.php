@@ -45,26 +45,8 @@ class RedactArgumentsModifier
     {
         $params = [];
 
-        if (empty($args)) {
-            return $params;
-        }
-
         foreach ($args as $arg) {
-            if (is_array($arg)) {
-                $params[] = 'array(' . count($arg) . ')';
-            } elseif (is_object($arg)) {
-                $params[] = get_class($arg);
-            } elseif (is_string($arg)) {
-                $params[] = 'string(***REDACTED***)';
-            } elseif (is_int($arg)) {
-                $params[] = 'int(***REDACTED***)';
-            } elseif (is_float($arg)) {
-                $params[] = 'float(***REDACTED***)';
-            } elseif (is_bool($arg)) {
-                $params[] = 'bool(' . ($arg ? 'true' : 'false') . ')';
-            } else {
-                $params[] = '***REDACTED***';
-            }
+            $params[] = preg_replace('/^(array|string|int|float|bool)\(.*\)$/', '\1(***REDACTED***)', $arg);
         }
 
         return $params;
