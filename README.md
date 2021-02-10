@@ -61,7 +61,7 @@ $handler = new LogDnaHandler(getenv('LOGDNA_INGESTION_KEY'), 'host');
 $handler->setFormatter(new SmartJsonFormatter);
 ```
 
-### Mapping And Filtering
+### Stack Trace Mapping And Filtering
 
 The smart JSON formatter can be configured to map and filter the final stack trace. This can be useful when you want to modify (map) or remove frames (filter) from the final stack trace. 
 
