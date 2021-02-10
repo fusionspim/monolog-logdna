@@ -6,16 +6,17 @@ use Throwable;
 class SmartJsonFormatter extends BasicJsonFormatter
 {
     protected $includeStacktraces = true;
-    private $ignorePaths          = [];
+    protected $maps               = [];
+    protected $filters            = [];
 
-    /**
-     * Ignore paths are paths to code that will be excluded from the log stack trace output.
-     * This is useful when you have deep stacks (e.g.  middleware) that isn't relevant to the log output.
-     * It also helps keep the JSON size down.
-     */
-    public function setIgnorePaths(array $ignorePaths): void
+    public function addMap(callable $fn): void
     {
-        $this->ignorePaths = $ignorePaths;
+        $this->maps[] = $fn;
+    }
+
+    public function addFilter(callable $fn): void
+    {
+        $this->filters[] = $fn;
     }
 
     /*
@@ -48,26 +49,28 @@ class SmartJsonFormatter extends BasicJsonFormatter
         $stack = [];
 
         foreach ($trace as $frame) {
-            $file = ($frame['file'] ?? '');
-
-            if (empty($file)) {
-                continue;
-            }
-
-            foreach ($this->ignorePaths as $name) {
-                if (mb_strpos($file, $name) !== false) {
-                    continue 2;
-                }
-            }
-
-            $stack[] = [
+            $frame = [
                 'class'    => ($frame['class'] ?? ''),
                 'function' => $frame['function'],
                 'args'     => $this->argsToArray($frame),
                 'type'     => $this->callToString($frame),
-                'file'     => $file,
+                'file'     => ($frame['file'] ?? ''),
                 'line'     => ($frame['line'] ?? ''),
             ];
+
+            if (empty($frame['file'])) {
+                continue;
+            }
+
+            $stack[] = $frame;
+        }
+
+        foreach ($this->maps as $map) {
+            $stack = array_map($map, $stack);
+        }
+
+        foreach ($this->filters as $filter) {
+            $stack = array_filter($stack, $filter);
         }
 
         return $stack;
