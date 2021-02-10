@@ -90,7 +90,7 @@ use Fusions\Monolog\LogDna\Filter\IgnorePathsFilter;
 use Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter;
 
 $formatter = new SmartJsonFormatter;
-$formatter->addFilter(new use IgnorePathsFilter(['/path/to/vendor']));
+$formatter->addFilter(new IgnorePathsFilter(['/path/to/vendor']));
 ```
 
 A `RedactArgumentsMap` class is also included which redacts sensitive arguments from matching frames. You can use this to redact database credentials from your stack trace:
