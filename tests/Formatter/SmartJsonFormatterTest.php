@@ -78,7 +78,7 @@ class SmartJsonFormatterTest extends TestCase
     /**
      * @covers ::addStackTraceModifier
      * @covers ::format
-     * @covers ::IgnorePathsModifier
+     * @covers ::IgnorePathsFilter
      */
     public function test_format_modifier_ignore_paths(): void
     {
@@ -102,7 +102,7 @@ class SmartJsonFormatterTest extends TestCase
     /**
      * @covers ::addStackTraceModifier
      * @covers ::format
-     * @covers ::RedactArgumentsModifier
+     * @covers ::RedactArgumentsMap
      */
     public function test_format_modifier_redact_arguments(): void
     {
