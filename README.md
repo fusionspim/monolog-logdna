@@ -63,7 +63,7 @@ $handler->setFormatter(new SmartJsonFormatter);
 
 It can also be configured to modify or omit stack trace frames with a callable. Each "modifier" callable is applied to every frame in the stack trace.
 
-If the callable returns a modified frame it's added to the stack trace. If it returns null the entire frame is omitted from the stack trace: 
+If the callable returns the original or modified frame it's added to the stack trace. If it returns null the entire frame is omitted from the stack trace: 
 
 ```
 $formatter = new SmartJsonFormatter;
