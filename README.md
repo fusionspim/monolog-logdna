@@ -61,32 +61,37 @@ $handler = new LogDnaHandler(getenv('LOGDNA_INGESTION_KEY'), 'host');
 $handler->setFormatter(new SmartJsonFormatter);
 ```
 
-It can also be configured to modify or omit stack trace frames with a callable. Each "modifier" callable is applied to every frame in the stack trace.
+### Mapping And Filtering
 
-If the callable returns the original or modified frame it's added to the stack trace. If it returns null the entire frame is omitted from the stack trace: 
+The smart JSON formatter can be configured to map and filter the final stack trace. This can be useful when you want to modify (map) or remove frames (filter) from the final stack trace. 
+
+You can add maps and filters using `addMap()` and `addFilter()`. Each accepts a callable that is applied to every frame in the stack trace. 
+
+Maps are applied first and should return an array. Filters are applied last and should return a boolean. Both are applied in the order they were added to the formatter.
 
 ```
 $formatter = new SmartJsonFormatter;
-$formatter->addStackTraceModifier(function (array $frame): ?array {
-    // Modify the frame by removing its arguments: 
-    // $frame['args'] = [];
-    // return $frame;
-    
-    // Omit this frame from the stack trace:
-    // return null;
+
+// Modify the stack trace frame to include an extra field.
+$formatter->addMap(function (array $frame): array {
+    $frame['foo'] = 'bar';
+    return $frame;
 });
+
+// Remove all stack trace frames with zero arguments.
+$formatter->addFilter(fn (array $frame): bool => count($frame['args']) > 0);
 ```
 
-An `IgnorePathsModifier` class is included which removes specific paths from stack traces. You can use this to exclude vendor or middleware components from your stack trace:
+An `IgnorePathsFilter` class is included which removes specific paths from stack traces. You can use this to exclude vendor or middleware components from your stack trace:
 ```
 $formatter = new SmartJsonFormatter;
-$formatter->addStackTraceModifier(new IgnorePathsModifier(['/path/to/vendor']));
+$formatter->addFilter(new IgnorePathsFilter(['/path/to/vendor']));
 ```
 
-A `RedactArgumentsModifier` class is also included which redacts sensitive arguments from specific frames. You can use this to redact database credentials from your stack trace:
+A `RedactArgumentsMap` class is also included which redacts sensitive arguments from matching frames. You can use this to redact database credentials from your stack trace:
 ```
 $formatter = new SmartJsonFormatter;
-$formatter->addStackTraceModifier(new RedactArgumentsModifier([
+$formatter->addMap(new RedactArgumentsMap([
     [
         'class'    => 'PDO', 
         'function' => '__construct', 
