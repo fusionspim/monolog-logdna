@@ -2,6 +2,8 @@
 namespace Fusions\Test\Monolog\LogDna\Formatter;
 
 use Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter;
+use Fusions\Monolog\LogDna\Modifier\IgnorePathsModifier;
+use Fusions\Monolog\LogDna\Modifier\RedactArgumentsModifier;
 use Fusions\Test\Monolog\LogDna\TestHelperTrait;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
@@ -74,10 +76,11 @@ class SmartJsonFormatterTest extends TestCase
     }
 
     /**
+     * @covers ::addStackTraceModifier
      * @covers ::format
-     * @covers ::setIgnorePaths
+     * @covers ::IgnorePathsModifier
      */
-    public function test_format_ignore_paths(): void
+    public function test_format_modifier_ignore_paths(): void
     {
         $excludedPath = '/my/fake/path/vendor';
 
@@ -86,13 +89,149 @@ class SmartJsonFormatterTest extends TestCase
         ]);
 
         $formatter = new SmartJsonFormatter;
-        $formatter->setIgnorePaths([$excludedPath]);
+        $formatter->addStackTraceModifier(new IgnorePathsModifier([$excludedPath]));
         $output = json_decode($formatter->format($record), true);
 
         $this->assertCount(3, $output['lines'][0]['meta']['exception']['trace']);
 
         foreach ($output['lines'][0]['meta']['exception']['trace'] as $trace) {
             $this->assertStringNotContainsString($excludedPath, $trace['file']);
+        }
+    }
+
+    /**
+     * @covers ::addStackTraceModifier
+     * @covers ::format
+     * @covers ::RedactArgumentsModifier
+     */
+    public function test_format_modifier_redact_arguments(): void
+    {
+        $redactedFrameArguments = [
+            [
+                'class'    => 'PDO',
+                'function' => '__construct',
+                'type'     => 'method',
+            ],
+            [
+                'class'    => 'Illuminate\\Database\\Connectors\\Connector',
+                'function' => 'createPdoConnection',
+                'type'     => 'method',
+            ],
+            [
+                'class'    => 'Illuminate\\Database\\Connectors\\Connector',
+                'function' => 'createConnection',
+                'type'     => 'method',
+            ],
+        ];
+
+        $record = $this->getRecord(Logger::INFO, 'This is a test message containing sensitive credentials', [
+            'exception' => $this->getExceptionWithStackTrace('This is a test exception', 42, null, [
+                [
+                    'class'    => 'PDO',
+                    'function' => '__construct',
+                    'args'     => [
+                        'mysql:host=test.database.hostname.com;port=3306;dbname=test',
+                        'username',
+                        'password',
+                        [2 => true],
+                        42,
+                        42.42,
+                        new \stdClass,
+                    ],
+                    'type'     => '->',
+                    'file'     => '/vendor/illuminate/database/Connectors/Connector.php',
+                    'line'     => 70,
+                ],
+                [
+                    'class'    => 'Illuminate\\Database\\Connectors\\Connector',
+                    'function' => 'createPdoConnection',
+                    'args'     => [
+                        'mysql:host=test.database.hostname.com;port=3306;dbname=test',
+                        'username',
+                        'password',
+                        [2 => true],
+                    ],
+                    'type'     => '->',
+                    'file'     => '/vendor/illuminate/database/Connectors/Connector.php',
+                    'line'     => 46,
+                ],
+                [
+                    'class'    => 'Illuminate\\Database\\Connectors\\Connector',
+                    'function' => 'createConnection',
+                    'args'     => [
+                        'mysql:host=test.database.hostname.com;port=3306;dbname=test',
+                        [
+                            'username' => 'username',
+                            'password' => 'password',
+                        ],
+                        [2 => true],
+                    ],
+                    'type'     => '->',
+                    'file'     => '/vendor/illuminate/database/Connectors/MySqlConnector.php',
+                    'line'     => 24,
+                ],
+                [
+                    'function' => 'prepareDatabase',
+                    'args'     => [
+                        'foo',
+                        'bar',
+                        [2 => true],
+                        42,
+                        42.42,
+                        new \stdClass,
+                    ],
+                    'file'     => '/my/fake/path/prepare.php',
+                    'line'     => 42,
+                ],
+                [
+                    'function' => 'connectToDatabase',
+                    'args'     => [],
+                    'file'     => '/my/fake/path/connect.php',
+                    'line'     => 42,
+                ],
+            ]),
+        ]);
+
+        $formatter = new SmartJsonFormatter;
+        $formatter->addStackTraceModifier(new RedactArgumentsModifier($redactedFrameArguments));
+        $output = json_decode($formatter->format($record), true);
+
+        $this->assertCount(5, $output['lines'][0]['meta']['exception']['trace']);
+
+        $expectedArguments = [
+            [
+                'string(***REDACTED***)',
+                'string(***REDACTED***)',
+                'string(***REDACTED***)',
+                'array(***REDACTED***)',
+                'int(***REDACTED***)',
+                'float(***REDACTED***)',
+                'stdClass',
+            ],
+            [
+                'string(***REDACTED***)',
+                'string(***REDACTED***)',
+                'string(***REDACTED***)',
+                'array(***REDACTED***)',
+            ],
+            [
+                'string(***REDACTED***)',
+                'array(***REDACTED***)',
+                'array(***REDACTED***)',
+            ],
+            [
+                'string(foo)',
+                'string(bar)',
+                'array(1)',
+                'int(42)',
+                'float(42.42)',
+                'stdClass',
+            ],
+            [],
+        ];
+
+        foreach ($expectedArguments as $index => $expectedArgument) {
+            $this->assertSame($expectedArgument, $output['lines'][0]['meta']['exception']['trace'][$index]['args']);
         }
     }
 }
