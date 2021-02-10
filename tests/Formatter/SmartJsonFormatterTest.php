@@ -76,8 +76,8 @@ class SmartJsonFormatterTest extends TestCase
     }
 
     /**
-     * @covers ::format
      * @covers ::addStackTraceModifier
+     * @covers ::format
      * @covers ::IgnorePathsModifier
      */
     public function test_format_modifier_ignore_paths(): void
@@ -100,8 +100,8 @@ class SmartJsonFormatterTest extends TestCase
     }
 
     /**
-     * @covers ::format
      * @covers ::addStackTraceModifier
+     * @covers ::format
      * @covers ::RedactArgumentsModifier
      */
     public function test_format_modifier_redact_arguments(): void
@@ -110,17 +110,17 @@ class SmartJsonFormatterTest extends TestCase
             [
                 'class'    => 'PDO',
                 'function' => '__construct',
-                'type'     => 'method'
+                'type'     => 'method',
             ],
             [
                 'class'    => 'Illuminate\\Database\\Connectors\\Connector',
                 'function' => 'createPdoConnection',
-                'type'     => 'method'
+                'type'     => 'method',
             ],
             [
                 'class'    => 'Illuminate\\Database\\Connectors\\Connector',
                 'function' => 'createConnection',
-                'type'     => 'method'
+                'type'     => 'method',
             ],
         ];
 
@@ -137,7 +137,7 @@ class SmartJsonFormatterTest extends TestCase
                     ],
                     'type'     => '->',
                     'file'     => '/vendor/illuminate/database/Connectors/Connector.php',
-                    'line'     => 70
+                    'line'     => 70,
                 ],
                 [
                     'class'    => 'Illuminate\\Database\\Connectors\\Connector',
@@ -150,7 +150,7 @@ class SmartJsonFormatterTest extends TestCase
                     ],
                     'type'     => '->',
                     'file'     => '/vendor/illuminate/database/Connectors/Connector.php',
-                    'line'     => 46
+                    'line'     => 46,
                 ],
                 [
                     'class'    => 'Illuminate\\Database\\Connectors\\Connector',
@@ -159,13 +159,13 @@ class SmartJsonFormatterTest extends TestCase
                         'mysql:host=test.database.hostname.com;port=3306;dbname=test',
                         [
                             'username' => 'username',
-                            'password' => 'password'
+                            'password' => 'password',
                         ],
                         [2 => true],
                     ],
                     'type'     => '->',
                     'file'     => '/vendor/illuminate/database/Connectors/MySqlConnector.php',
-                    'line'     => 24
+                    'line'     => 24,
                 ],
                 [
                     'function' => 'prepareDatabase',

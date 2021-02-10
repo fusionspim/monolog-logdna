@@ -28,9 +28,9 @@ class RedactArgumentsModifier
     {
         foreach ($this->redactFrameArguments as $redactFrameArgument) {
             if (
-                $redactFrameArgument['class'] === ($frame['class'] ?? '') &&
-                $redactFrameArgument['function'] === $frame['function'] &&
-                $redactFrameArgument['type'] === $frame['type']
+                $redactFrameArgument['class'] === ($frame['class'] ?? '')
+                && $redactFrameArgument['function'] === $frame['function']
+                && $redactFrameArgument['type'] === $frame['type']
             ) {
                 $frame['args'] = $this->redactFrameArguments($frame['args']);
 

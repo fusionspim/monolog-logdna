@@ -5,7 +5,7 @@ use Throwable;
 
 class SmartJsonFormatter extends BasicJsonFormatter
 {
-    protected $includeStacktraces = true;
+    protected $includeStacktraces  = true;
     protected $stackTraceModifiers = [];
 
     /**
