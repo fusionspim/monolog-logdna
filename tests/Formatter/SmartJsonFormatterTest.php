@@ -80,7 +80,7 @@ class SmartJsonFormatterTest extends TestCase
      * @covers ::format
      * @covers ::IgnorePathsFilter
      */
-    public function test_format_modifier_ignore_paths(): void
+    public function test_format_filter_ignore_paths(): void
     {
         $excludedPath = '/my/fake/path/vendor';
 
@@ -104,7 +104,7 @@ class SmartJsonFormatterTest extends TestCase
      * @covers ::format
      * @covers ::RedactArgumentsMap
      */
-    public function test_format_modifier_redact_arguments(): void
+    public function test_format_map_redact_arguments(): void
     {
         $redactedFrameArguments = [
             [
