@@ -61,9 +61,36 @@ $handler = new LogDnaHandler(getenv('LOGDNA_INGESTION_KEY'), 'host');
 $handler->setFormatter(new SmartJsonFormatter);
 ```
 
-It can be configured to exclude specific paths from stack traces. You can use this to exclude vendor components:
+It can also be configured to modify or omit stack trace frames with a callable. Each "modifier" callable is applied to every frame in the stack trace.
+
+If the callable returns a modified frame it's added to the stack trace. If it returns null the entire frame is omitted from the stack trace: 
 
 ```
 $formatter = new SmartJsonFormatter;
-$formatter->setIgnorePaths(['/path/to/vendor']);
+$formatter->addStackTraceModifier(function (array $frame): ?array {
+    // Modify the frame by removing its arguments: 
+    // $frame['args'] = [];
+    // return $frame;
+    
+    // Omit this frame from the stack trace:
+    // return null;
+});
+```
+
+An `IgnorePathsModifier` class is included which removes specific paths from stack traces. You can use this to exclude vendor or middleware components from your stack trace:
+```
+$formatter = new SmartJsonFormatter;
+$formatter->addStackTraceModifier(new IgnorePathsModifier(['/path/to/vendor']));
+```
+
+A `RedactArgumentsModifier` class is also included which redacts sensitive arguments from specific frames. You can use this to redact database credentials from your stack trace:
+```
+$formatter = new SmartJsonFormatter;
+$formatter->addStackTraceModifier(new RedactArgumentsModifier([
+    [
+        'class'    => 'PDO', 
+        'function' => '__construct', 
+        'type'     => 'method'
+    ]
+]));
 ```
