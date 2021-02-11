@@ -3,52 +3,34 @@ namespace Fusions\Monolog\LogDna\Map;
 
 class RedactArgumentsMap
 {
-    protected array $redactFrameArguments = [];
+    private $sensitiveArguments = [];
 
     /**
      * Redact arguments from stack trace frames belonging to a specific class method or function.
      * This is useful for excluding sensitive database credentials from log output.
      *
-     * Accepts an array of arrays with the class, function and type keys to match the frame on:
+     * Accepts an array of sensitive data to redact from the stack trace frame arguments:
      * [
-     *     ['class' => 'PDO', 'function' => '__construct', 'type' => 'method'],
-     *     [...],
+     *     'password1',
+     *     'password2',
      * ]
      */
-    public function __construct(array $redactFrameArguments)
+    public function __construct(array $sensitiveArguments)
     {
-        foreach ($redactFrameArguments as $redactFrameArgument) {
-            if (isset($redactFrameArgument['class'], $redactFrameArgument['function'], $redactFrameArgument['type'])) {
-                $this->redactFrameArguments[] = $redactFrameArgument;
-            }
+        foreach ($sensitiveArguments as $sensitiveArgument) {
+            $this->sensitiveArguments[] = (string) $sensitiveArgument;
         }
     }
 
     public function __invoke(array $frame): ?array
     {
-        foreach ($this->redactFrameArguments as $redactFrameArgument) {
-            if (
-                $redactFrameArgument['class'] === ($frame['class'] ?? '')
-                && $redactFrameArgument['function'] === $frame['function']
-                && $redactFrameArgument['type'] === $frame['type']
-            ) {
-                $frame['args'] = $this->redactFrameArguments($frame['args']);
-
-                return $frame;
-            }
-        }
+        $frame['args'] = $this->redactFrameArguments($frame['args']);
 
         return $frame;
     }
 
     protected function redactFrameArguments(array $args): array
     {
-        $params = [];
-
-        foreach ($args as $arg) {
-            $params[] = preg_replace('/^(array|string|int|float|bool)\(.*\)$/', '\1(***REDACTED***)', $arg);
-        }
-
-        return $params;
+        return str_replace($this->sensitiveArguments, '***REDACTED***', $args);
     }
 }

@@ -3,7 +3,7 @@ namespace Fusions\Monolog\LogDna\Filter;
 
 class IgnorePathsFilter
 {
-    protected array $ignorePaths = [];
+    protected $ignorePaths = [];
 
     /**
      * Omit stack trace frames containing specific file paths.

@@ -100,10 +100,8 @@ use Fusions\Monolog\LogDna\Map\RedactArgumentsMap;
 
 $formatter = new SmartJsonFormatter;
 $formatter->addMap(new RedactArgumentsMap([
-    [
-        'class'    => 'PDO', 
-        'function' => '__construct', 
-        'type'     => 'method'
-    ]
+    'hostname',
+    'username',
+    'password',
 ]));
 ```

@@ -107,21 +107,10 @@ class SmartJsonFormatterTest extends TestCase
     public function test_format_map_redact_arguments(): void
     {
         $redactedFrameArguments = [
-            [
-                'class'    => 'PDO',
-                'function' => '__construct',
-                'type'     => 'method',
-            ],
-            [
-                'class'    => 'Illuminate\\Database\\Connectors\\Connector',
-                'function' => 'createPdoConnection',
-                'type'     => 'method',
-            ],
-            [
-                'class'    => 'Illuminate\\Database\\Connectors\\Connector',
-                'function' => 'createConnection',
-                'type'     => 'method',
-            ],
+            'mysql:host=test.database.hostname.com;port=3306;dbname=test',
+            'username',
+            'password',
+            42.42
         ];
 
         $record = $this->getRecord(Logger::INFO, 'This is a test message containing sensitive credentials', [
@@ -139,11 +128,11 @@ class SmartJsonFormatterTest extends TestCase
                         new \stdClass,
                     ],
                     'type'     => '->',
-                    'file'     => '/vendor/illuminate/database/Connectors/Connector.php',
+                    'file'     => '/vendor/database/Connectors/Connector.php',
                     'line'     => 70,
                 ],
                 [
-                    'class'    => 'Illuminate\\Database\\Connectors\\Connector',
+                    'class'    => 'Database\\Connectors\\Connector',
                     'function' => 'createPdoConnection',
                     'args'     => [
                         'mysql:host=test.database.hostname.com;port=3306;dbname=test',
@@ -152,11 +141,11 @@ class SmartJsonFormatterTest extends TestCase
                         [2 => true],
                     ],
                     'type'     => '->',
-                    'file'     => '/vendor/illuminate/database/Connectors/Connector.php',
+                    'file'     => '/vendor/database/Connectors/Connector.php',
                     'line'     => 46,
                 ],
                 [
-                    'class'    => 'Illuminate\\Database\\Connectors\\Connector',
+                    'class'    => 'Database\\Connectors\\Connector',
                     'function' => 'createConnection',
                     'args'     => [
                         'mysql:host=test.database.hostname.com;port=3306;dbname=test',
@@ -167,7 +156,7 @@ class SmartJsonFormatterTest extends TestCase
                         [2 => true],
                     ],
                     'type'     => '->',
-                    'file'     => '/vendor/illuminate/database/Connectors/MySqlConnector.php',
+                    'file'     => '/vendor/database/Connectors/MySqlConnector.php',
                     'line'     => 24,
                 ],
                 [
@@ -203,8 +192,8 @@ class SmartJsonFormatterTest extends TestCase
                 'string(***REDACTED***)',
                 'string(***REDACTED***)',
                 'string(***REDACTED***)',
-                'array(***REDACTED***)',
-                'int(***REDACTED***)',
+                'array(1)',
+                'int(42)',
                 'float(***REDACTED***)',
                 'stdClass',
             ],
@@ -212,19 +201,19 @@ class SmartJsonFormatterTest extends TestCase
                 'string(***REDACTED***)',
                 'string(***REDACTED***)',
                 'string(***REDACTED***)',
-                'array(***REDACTED***)',
+                'array(1)',
             ],
             [
                 'string(***REDACTED***)',
-                'array(***REDACTED***)',
-                'array(***REDACTED***)',
+                'array(2)',
+                'array(1)',
             ],
             [
                 'string(foo)',
                 'string(bar)',
                 'array(1)',
                 'int(42)',
-                'float(42.42)',
+                'float(***REDACTED***)',
                 'stdClass',
             ],
             [],
