@@ -110,7 +110,7 @@ class SmartJsonFormatterTest extends TestCase
             'mysql:host=test.database.hostname.com;port=3306;dbname=test',
             'username',
             'password',
-            42.42
+            42.42,
         ];
 
         $record = $this->getRecord(Logger::INFO, 'This is a test message containing sensitive credentials', [
