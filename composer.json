@@ -17,7 +17,7 @@
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.6",
-        "fusionspim/php-cs-fixer-config": "^6.0 || ^7.0",
+        "fusionspim/php-cs-fixer-config": "^6.0 || ^7.0 || ^8.0",
         "phpunit/phpunit": "^9.0.0",
         "symfony/var-dumper": "^5.2"
     },
@@ -34,7 +34,7 @@
     "minimum-stability": "stable",
     "scripts": {
         "fix": [
-            "php-cs-fixer fix --config=.php_cs.dist; echo",
+            "php-cs-fixer fix --config=.php-cs-fixer.dist.php; echo",
             "composer normalize; echo"
         ],
         "test": [

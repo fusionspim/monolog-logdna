@@ -17,7 +17,7 @@ blocks:
             - cache restore # Composer dependencies
             - export "PATH=./vendor/bin:${PATH}" # So we can use dependency executables
             - composer install --prefer-dist --no-suggest --no-interaction
-            - php-cs-fixer fix --config=.php_cs.dist --dry-run --diff --verbose --stop-on-violation
+            - php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --diff --verbose --stop-on-violation
             - composer normalize --dry-run
             - phpunit --stop-on-failure
             - cache store
