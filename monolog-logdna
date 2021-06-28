@@ -17,8 +17,14 @@ fi
 
 # Handle commands...
 if [ $# -gt 0 ]; then
-     # Execute PHP CS Fixer...
-    if [ "$1" == "fix" ]; then
+    # Initiate a Bash shell...
+    if [ "$1" == "shell" ]; then
+        shift 1
+
+        docker run -it --rm --name monolog-logdna --volume "$PWD":/var/www/vhosts/monolog-logdna --workdir /var/www/vhosts/monolog-logdna $PHP_CLI_IMAGE bash
+
+    # Execute PHP CS Fixer...
+    elif [ "$1" == "fix" ]; then
         docker run -it --rm --name monolog-logdna --volume "$PWD":/var/www/vhosts/monolog-logdna --workdir /var/www/vhosts/monolog-logdna $PHP_CLI_IMAGE composer run fix
 
     # Execute PHPUnit testsuite...
@@ -40,7 +46,7 @@ if [ $# -gt 0 ]; then
     fi
 else
     # Show command usage instructions...
-    # @see http://docopt.org/ for formatting notes.
+    echo "       ./monolog-logdna shell"
     echo "       ./monolog-logdna fix"
     echo "       ./monolog-logdna test"
     echo "       ./monolog-logdna phpunit <command>"
