@@ -1,0 +1,83 @@
+#!/usr/bin/env bash
+# @see https://raw.githubusercontent.com/laravel/sail/master/bin/sail
+
+if [ "$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )" != "$(pwd)" ]; then
+    echo "Script should be run from monolog-logdna folder" >&2
+    exit 1;
+fi
+
+# Ensure that Docker is running...
+if ! docker info > /dev/null 2>&1; then
+    echo "Docker is not running." >&2
+    exit 1
+fi
+
+# Handle commands...
+if [ $# -gt 0 ]; then
+    # Bring the application up...
+    if [ "$1" == "up" ]; then
+        shift 1
+
+        docker-compose up -d
+
+    # Take down the application...
+    elif [ "$1" == "down" ]; then
+        docker-compose down --remove-orphans
+
+    # Restart the application...
+    elif [ "$1" == "restart" ]; then
+        docker-compose restart
+
+    # Prune odds and sods left by Docker to reclaim disk space...
+    elif [ "$1" == "prune" ]; then
+        docker system prune --volumes -f
+
+    # Build any container images that need building...
+    elif [ "$1" == "build" ]; then
+        shift 1
+
+        docker-compose build "$@"
+
+    # Rebuild all the container images...
+    elif [ "$1" == "rebuild" ]; then
+        shift 1
+
+        docker-compose build --pull --no-cache --force-rm "$@"
+
+    # Initiate a Bash shell within the specified container (PHP by default)...
+    elif [ "$1" == "shell" ] || [ "$1" == "bash" ]; then
+        shift 1
+
+        docker-compose exec php bash
+
+    # Execute tests.
+    elif [ "$1" == "test" ]; then
+        docker-compose exec php composer test
+
+     # Execute fixer.
+    elif [ "$1" == "fix" ]; then
+        docker-compose exec php composer fix
+
+    # Proxy Composer commands to the "composer" binary on the php container...
+    elif [ "$1" == "composer" ]; then
+        shift 1
+
+        docker-compose exec --env="XDEBUG_MODE=off" php composer "$@"
+
+    else
+        # Pass unknown commands to the "docker-compose" binary...
+        docker-compose "$@"
+
+    fi
+else
+    # Show command usage instructions...
+    # @see http://docopt.org/ for formatting notes.
+    echo "Usage: ./monolog-logdna up [<customer>|default: default] [<env>|default: dev]"
+    echo "       ./monolog-logdna down"
+    echo "       ./monolog-logdna restart"
+    echo "       ./monolog-logdna prune"
+    echo "       ./monolog-logdna build"
+    echo "       ./monolog-logdna rebuild"
+    echo "       ./monolog-logdna shell"
+    echo "       ./monolog-logdna composer <command>"
+fi
