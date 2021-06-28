@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+
+# Some variables...
+PHP_CLI_IMAGE="ghcr.io/fusionspim/monolog-logdna/php-cli:latest"
+
+# Check running directory...
+if [ "$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )" != "$(pwd)" ]; then
+    echo "Script should be run from monolog-logdna folder" >&2
+    exit 1;
+fi
+
+# Ensure that Docker is running...
+if ! docker info > /dev/null 2>&1; then
+    echo "Docker is not running." >&2
+    exit 1
+fi
+
+# Handle commands...
+if [ $# -gt 0 ]; then
+     # Execute PHP CS Fixer...
+    if [ "$1" == "fix" ]; then
+        docker run -it --rm --name monolog-logdna --volume "$PWD":/var/www/vhosts/monolog-logdna --workdir /var/www/vhosts/monolog-logdna $PHP_CLI_IMAGE composer run fix
+
+    # Execute PHPUnit testsuite...
+    elif [ "$1" == "test" ]; then
+        docker run -it --rm --name monolog-logdna --volume "$PWD":/var/www/vhosts/monolog-logdna --workdir /var/www/vhosts/monolog-logdna $PHP_CLI_IMAGE composer run test
+
+    # Proxy PHPUnit commands...
+    elif [ "$1" == "phpunit" ]; then
+        shift 1
+
+        docker run -it --rm --name monolog-logdna --volume "$PWD":/var/www/vhosts/monolog-logdna --workdir /var/www/vhosts/monolog-logdna $PHP_CLI_IMAGE php vendor/bin/phpunit "$@"
+
+    # Proxy Composer commands...
+    elif [ "$1" == "composer" ]; then
+        shift 1
+
+        docker run -it --rm --name monolog-logdna --volume "$PWD":/var/www/vhosts/monolog-logdna --workdir /var/www/vhosts/monolog-logdna $PHP_CLI_IMAGE composer "$@"
+
+    fi
+else
+    # Show command usage instructions...
+    # @see http://docopt.org/ for formatting notes.
+    echo "       ./monolog-logdna fix"
+    echo "       ./monolog-logdna test"
+    echo "       ./monolog-logdna phpunit <command>"
+    echo "       ./monolog-logdna composer <command>"
+fi
