@@ -21,7 +21,7 @@ if [ $# -gt 0 ]; then
     if [ "$1" == "shell" ]; then
         shift 1
 
-        docker run -it --rm --name monolog-logdna --volume "$PWD":/var/www/vhosts/monolog-logdna --workdir /var/www/vhosts/monolog-logdna $PHP_CLI_IMAGE bash
+        docker run -it --rm --name monolog-logdna --volume "$PWD":/var/www/vhosts/monolog-logdna --workdir /var/www/vhosts/monolog-logdna $PHP_CLI_IMAGE sh
 
     # Execute PHP CS Fixer...
     elif [ "$1" == "fix" ]; then
