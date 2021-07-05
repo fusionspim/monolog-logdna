@@ -34,7 +34,7 @@ jobs:
       - name: Install Composer dependencies
         run: |
           docker run -t --rm -v "$PWD":/var/www/vhosts/monolog-logdna -w /var/www/vhosts/monolog-logdna ${{ env.PHP_CLI_IMAGE }} \
-            php composer install --prefer-dist --no-interaction
+            composer install --prefer-dist --no-interaction
 
       - name: Restore PHP CS Fixer defects
         uses: actions/cache@v2
