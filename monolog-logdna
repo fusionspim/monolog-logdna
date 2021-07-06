@@ -22,27 +22,27 @@ if [ $# -gt 0 ]; then
     if [ "$1" == "shell" ]; then
         shift 1
 
-        docker run -it --rm --name "$CONTAINER_NAME" -v "$PWD":/app "$PHP_CLI_IMAGE" sh
+        docker run -it --rm --name "$CONTAINER_NAME" -v "$PWD":/app -w /app "$PHP_CLI_IMAGE" sh
 
     # Execute PHP CS Fixer...
     elif [ "$1" == "fix" ]; then
-        docker run -it --rm --name "$CONTAINER_NAME" -v "$PWD":/app "$PHP_CLI_IMAGE" composer run fix
+        docker run -it --rm --name "$CONTAINER_NAME" -v "$PWD":/app -w /app "$PHP_CLI_IMAGE" composer run fix
 
     # Execute PHPUnit testsuite...
     elif [ "$1" == "test" ]; then
-        docker run -it --rm --name "$CONTAINER_NAME" -v "$PWD":/app "$PHP_CLI_IMAGE" composer run test
+        docker run -it --rm --name "$CONTAINER_NAME" -v "$PWD":/app  -w /app "$PHP_CLI_IMAGE" composer run test
 
     # Proxy PHPUnit commands...
     elif [ "$1" == "phpunit" ]; then
         shift 1
 
-        docker run -it --rm --name "$CONTAINER_NAME" -volume "$PWD":/app "$PHP_CLI_IMAGE" php vendor/bin/phpunit "$@"
+        docker run -it --rm --name "$CONTAINER_NAME" -volume "$PWD":/app  -w /app "$PHP_CLI_IMAGE" php vendor/bin/phpunit "$@"
 
     # Proxy Composer commands...
     elif [ "$1" == "composer" ]; then
         shift 1
 
-        docker run -it --rm --name "$CONTAINER_NAME" -v "$PWD":/app "$PHP_CLI_IMAGE" composer "$@"
+        docker run -it --rm --name "$CONTAINER_NAME" -v "$PWD":/app  -w /app "$PHP_CLI_IMAGE" composer "$@"
 
     fi
 else
