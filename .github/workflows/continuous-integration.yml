@@ -33,7 +33,7 @@ jobs:
 
       - name: Install Composer dependencies
         run: |
-          docker run -t --rm -v "$PWD":/var/www/vhosts/monolog-logdna -w /var/www/vhosts/monolog-logdna ${{ env.PHP_CLI_IMAGE }} \
+          docker run -t --rm -v "$PWD":/app -w /app ${{ env.PHP_CLI_IMAGE }} \
             composer install --prefer-dist --no-interaction
 
       - name: Restore PHP CS Fixer defects
@@ -45,11 +45,11 @@ jobs:
 
       - name: Run PHP CS Fixer
         run: |
-          docker run -t --rm -v "$PWD":/var/www/vhosts/monolog-logdna -w /var/www/vhosts/monolog-logdna ${{ env.PHP_CLI_IMAGE }} \
+          docker run -t --rm -v "$PWD":/app -w /app ${{ env.PHP_CLI_IMAGE }} \
             php vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --diff --verbose --stop-on-violation
 
       - name: Run unit tests
         shell: bash
         run: |
-          docker run -t --rm -v "$PWD":/var/www/vhosts/monolog-logdna -w /var/www/vhosts/monolog-logdna ${{ env.PHP_CLI_IMAGE }} \
+          docker run -t --rm -v "$PWD":/app -w /app ${{ env.PHP_CLI_IMAGE }} \
             php vendor/bin/phpunit --stop-on-failure
