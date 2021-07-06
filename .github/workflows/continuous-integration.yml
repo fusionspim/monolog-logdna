@@ -43,6 +43,11 @@ jobs:
           key: php-cs-fixer-${{ hashFiles('.php-cs-fixer.dist.php', '.php_cs.cache') }}
           restore-keys: php-cs-fixer-
 
+      - name: Normalise Composer
+        run: |
+          docker run -t --rm -v "$PWD":/app -w /app ${{ env.PHP_CLI_IMAGE }} \
+            composer normalize --dry-run
+
       - name: Run PHP CS Fixer
         run: |
           docker run -t --rm -v "$PWD":/app -w /app ${{ env.PHP_CLI_IMAGE }} \
