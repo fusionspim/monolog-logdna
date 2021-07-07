@@ -1,9 +1,10 @@
 name: "Continuous Integration"
 
 on:
-  - workflow_dispatch
+  workflow_dispatch:
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
 jobs:
   tests:
