@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# Some variables...
-CONTAINER_NAME="monolog-logdna"
-PHP_CLI_IMAGE="ghcr.io/fusionspim/monolog-logdna/php-cli:latest"
-
 # Check running directory...
 if [ "$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )" != "$(pwd)" ]; then
     echo "Script should be run from monolog-logdna folder" >&2
@@ -16,40 +12,37 @@ if ! docker info > /dev/null 2>&1; then
     exit 1
 fi
 
+# Function to run a command on Docker instance...
+function docker-php() {
+    docker run -it --rm --name monolog-logdna -v "$PWD":/app -w /app "ghcr.io/fusionspim/monolog-logdna/php-cli:latest" "$@"
+}
+
 # Handle commands...
 if [ $# -gt 0 ]; then
     # Initiate a Bash shell...
     if [ "$1" == "shell" ]; then
+        docker-php sh
+
+    # Proxy PHP commands...
+    elif [ "$1" == "php" ]; then
         shift 1
-
-        docker run -it --rm --name "$CONTAINER_NAME" -v "$PWD":/app -w /app "$PHP_CLI_IMAGE" sh
-
-    # Execute PHP CS Fixer...
-    elif [ "$1" == "fix" ]; then
-        docker run -it --rm --name "$CONTAINER_NAME" -v "$PWD":/app -w /app "$PHP_CLI_IMAGE" composer run fix
-
-    # Execute PHPUnit testsuite...
-    elif [ "$1" == "test" ]; then
-        docker run -it --rm --name "$CONTAINER_NAME" -v "$PWD":/app  -w /app "$PHP_CLI_IMAGE" composer run test
+        docker-php php "$@"
 
     # Proxy PHPUnit commands...
     elif [ "$1" == "phpunit" ]; then
         shift 1
-
-        docker run -it --rm --name "$CONTAINER_NAME" -volume "$PWD":/app  -w /app "$PHP_CLI_IMAGE" php vendor/bin/phpunit "$@"
+        docker-php php vendor/bin/phpunit "$@"
 
     # Proxy Composer commands...
     elif [ "$1" == "composer" ]; then
         shift 1
-
-        docker run -it --rm --name "$CONTAINER_NAME" -v "$PWD":/app  -w /app "$PHP_CLI_IMAGE" composer "$@"
+        docker-php composer "$@"
 
     fi
 else
     # Show command usage instructions...
     echo "Usage: ./monolog-logdna shell"
-    echo "       ./monolog-logdna fix"
-    echo "       ./monolog-logdna test"
+    echo "       ./monolog-logdna php <command>"
     echo "       ./monolog-logdna phpunit <command>"
     echo "       ./monolog-logdna composer <command>"
 fi
