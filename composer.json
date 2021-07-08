@@ -10,8 +10,8 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
-        "ext-json": "*",
+        "php": "^7.4 || ^8.0",
+        "ext-json": "^7.4 || ^8.0",
         "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "monolog/monolog": "^2.0"
     },
