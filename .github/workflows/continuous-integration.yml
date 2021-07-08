@@ -1,60 +1,51 @@
 name: "Continuous Integration"
 
 on:
-  - workflow_dispatch
-  - pull_request
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+env:
+  APP_ENV: test
 
 jobs:
-  tests:
-    name: Tests
-    runs-on: ubuntu-20.04
-    env:
-      PHP_CLI_IMAGE: "ghcr.io/fusionspim/monolog-logdna/php-cli:latest"
+  build:
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        php-version:
+          - '7.4'
+          - '8.0'
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Login to Github Container Registry
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u fusionsbot --password-stdin
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: "${{ matrix.php-version }}"
+        coverage: none
+        tools: composer
 
-      - name: Restore Docker images
-        uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true
-        with:
-          key: docker-images-${{ hashFiles('docker/**') }}
-          restore-keys: docker-images-
+    - name: Restore Composer dependencies
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
 
-      - name: Restore Composer dependencies
-        uses: actions/cache@v2
-        with:
-          path: ./vendor
-          key: php-composer-${{ hashFiles('composer.lock') }}
-          restore-keys: php-composer-
+    - name: Install Composer dependencies
+      if: steps.composer-cache.outputs.cache-hit != 'true'
+      run: composer install --prefer-dist --no-progress --no-suggest --no-interaction
 
-      - name: Install Composer dependencies
-        run: |
-          docker run -t --rm -v "$PWD":/var/www/vhosts/monolog-logdna -w /var/www/vhosts/monolog-logdna ${{ env.PHP_CLI_IMAGE }} \
-            composer install --prefer-dist --no-interaction
+    - name: Run PHP CS fixer
+      run: vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --diff --verbose --stop-on-violation
 
-      - name: Restore PHP CS Fixer defects
-        uses: actions/cache@v2
-        with:
-          path: .php_cs.cache
-          key: php-cs-fixer-${{ hashFiles('.php-cs-fixer.dist.php', '.php_cs.cache') }}
-          restore-keys: php-cs-fixer-
+    - name: Run Composer normalized
+      run: composer normalize --dry-run
 
-      - name: Normalise Composer
-        run: |
-          docker run -t --rm -v "$PWD":/var/www/vhosts/monolog-logdna -w /var/www/vhosts/monolog-logdna ${{ env.PHP_CLI_IMAGE }} \
-            composer normalize --dry-run
-
-      - name: Run PHP CS Fixer
-        run: |
-          docker run -t --rm -v "$PWD":/var/www/vhosts/monolog-logdna -w /var/www/vhosts/monolog-logdna ${{ env.PHP_CLI_IMAGE }} \
-            php vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --diff --verbose --stop-on-violation
-
-      - name: Run unit tests
-        shell: bash
-        run: |
-          docker run -t --rm -v "$PWD":/var/www/vhosts/monolog-logdna -w /var/www/vhosts/monolog-logdna ${{ env.PHP_CLI_IMAGE }} \
-            php vendor/bin/phpunit --stop-on-failure
+    - name: Run unit tests
+      run: composer test
