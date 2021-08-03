@@ -1,4 +1,4 @@
-name: "Build and Push"
+name: "Build and Push Docker Images"
 
 on:
   workflow_dispatch:
@@ -10,7 +10,7 @@ on:
 
 jobs:
   build-and-push:
-    name: "Build and Push"
+    name: "Build and Push Docker Images"
     runs-on: ubuntu-latest
     strategy:
       matrix:
