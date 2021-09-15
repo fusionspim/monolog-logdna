@@ -9,9 +9,7 @@ use Throwable;
 
 trait TestHelperTrait
 {
-    /**
-     * @see https://github.com/Seldaek/monolog/blob/1.x/tests/Monolog/TestCase.php
-     */
+    /** @see https://github.com/Seldaek/monolog/blob/1.x/tests/Monolog/TestCase.php */
     public function getRecord(int $level = Logger::WARNING, string $message = 'test', array $context = []): array
     {
         return [
@@ -25,7 +23,7 @@ trait TestHelperTrait
         ];
     }
 
-    public function getExceptionWithStackTrace(string $message = '', int $code = 0, Throwable $previous = null, array $trace = null): Exception
+    public function getExceptionWithStackTrace(string $message = '', int $code = 0, ?Throwable $previous = null, ?array $trace = null): Exception
     {
         return new StackTraceTestException($message, $code, $previous, $trace ?? [
             [
