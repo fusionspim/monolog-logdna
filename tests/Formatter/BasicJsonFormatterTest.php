@@ -13,9 +13,7 @@ class BasicJsonFormatterTest extends TestCase
 {
     use TestHelperTrait;
 
-    /**
-     * @covers ::format
-     */
+    /** @covers ::format */
     public function test_format(): void
     {
         $record = $this->getRecord(Logger::INFO, 'This is a test message', ['FOO' => 'BAR']);

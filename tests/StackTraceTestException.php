@@ -11,7 +11,7 @@ use Throwable;
  */
 class StackTraceTestException extends Exception
 {
-    public function __construct($message = '', $code = 0, Throwable $previous = null, array $trace = [])
+    public function __construct($message = '', $code = 0, ?Throwable $previous = null, array $trace = [])
     {
         parent::__construct($message, $code, $previous);
         $this->setTrace($trace);
