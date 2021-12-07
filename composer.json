@@ -1,8 +1,8 @@
 {
     "name": "fusionspim/monolog-logdna",
-    "type": "library",
     "description": "A Monolog handler and formatter for LogDNA",
     "license": "MIT",
+    "type": "library",
     "authors": [
         {
             "name": "Fusions PIM",
@@ -21,6 +21,7 @@
         "phpunit/phpunit": "^9.0.0",
         "symfony/var-dumper": "^5.2"
     },
+    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "Fusions\\Monolog\\LogDna\\": "src/"
@@ -31,7 +32,6 @@
             "Fusions\\Test\\Monolog\\LogDna\\": "tests/"
         }
     },
-    "minimum-stability": "stable",
     "scripts": {
         "fix": [
             "php-cs-fixer fix --config=.php-cs-fixer.dist.php; echo",
