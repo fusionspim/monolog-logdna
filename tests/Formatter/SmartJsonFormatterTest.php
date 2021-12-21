@@ -6,7 +6,9 @@ use Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter;
 use Fusions\Monolog\LogDna\Map\RedactArgumentsMap;
 use Fusions\Test\Monolog\LogDna\TestHelperTrait;
 use Monolog\Logger;
+use PDO;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * @coversDefaultClass \Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter
@@ -22,7 +24,7 @@ class SmartJsonFormatterTest extends TestCase
             'exception' => $this->getExceptionWithStackTrace('This is a test exception', 42, null),
         ]);
 
-        $output = json_decode((new SmartJsonFormatter)->format($record), true);
+        $output = json_decode((new SmartJsonFormatter)->format($record), true, 512, JSON_THROW_ON_ERROR);
 
         // Core fields.
         $this->assertSame($record['datetime']->getTimestamp(), $output['lines'][0]['timestamp']);
@@ -31,7 +33,7 @@ class SmartJsonFormatterTest extends TestCase
         $this->assertSame($record['level_name'], $output['lines'][0]['level']);
 
         // Meta field.
-        $this->assertSame(get_class($record['context']['exception']), $output['lines'][0]['meta']['exception']['class']);
+        $this->assertSame($record['context']['exception']::class, $output['lines'][0]['meta']['exception']['class']);
         $this->assertSame($record['context']['exception']->getMessage(), $output['lines'][0]['meta']['exception']['message']);
         $this->assertSame($record['context']['exception']->getCode(), $output['lines'][0]['meta']['exception']['code']);
 
@@ -48,7 +50,7 @@ class SmartJsonFormatterTest extends TestCase
                 'float(42.42)',
                 'string(FOO)',
                 'array(2)',
-                'stdClass',
+                stdClass::class,
             ],
             $output['lines'][0]['meta']['exception']['trace'][0]['args']
         );
@@ -88,7 +90,7 @@ class SmartJsonFormatterTest extends TestCase
 
         $formatter = new SmartJsonFormatter;
         $formatter->addFilter(new IgnorePathsFilter([$excludedPath]));
-        $output = json_decode($formatter->format($record), true);
+        $output = json_decode($formatter->format($record), true, 512, JSON_THROW_ON_ERROR);
 
         $this->assertCount(3, $output['lines'][0]['meta']['exception']['trace']);
 
@@ -114,7 +116,7 @@ class SmartJsonFormatterTest extends TestCase
         $record = $this->getRecord(Logger::INFO, 'This is a test message containing sensitive credentials', [
             'exception' => $this->getExceptionWithStackTrace('This is a test exception', 42, null, [
                 [
-                    'class'    => 'PDO',
+                    'class'    => PDO::class,
                     'function' => '__construct',
                     'args'     => [
                         'mysql:host=test.database.hostname.com;port=3306;dbname=test',
@@ -123,7 +125,7 @@ class SmartJsonFormatterTest extends TestCase
                         [2 => true],
                         42,
                         42.42,
-                        new \stdClass,
+                        new stdClass,
                     ],
                     'type'     => '->',
                     'file'     => '/vendor/database/Connectors/Connector.php',
@@ -165,7 +167,7 @@ class SmartJsonFormatterTest extends TestCase
                         [2 => true],
                         42,
                         42.42,
-                        new \stdClass,
+                        new stdClass,
                     ],
                     'file'     => '/my/fake/path/prepare.php',
                     'line'     => 42,
@@ -181,7 +183,7 @@ class SmartJsonFormatterTest extends TestCase
 
         $formatter = new SmartJsonFormatter;
         $formatter->addMap(new RedactArgumentsMap($redactedFrameArguments));
-        $output = json_decode($formatter->format($record), true);
+        $output = json_decode($formatter->format($record), true, 512, JSON_THROW_ON_ERROR);
 
         $this->assertCount(5, $output['lines'][0]['meta']['exception']['trace']);
 
@@ -193,7 +195,7 @@ class SmartJsonFormatterTest extends TestCase
                 'array(1)',
                 'int(42)',
                 'float(***REDACTED***)',
-                'stdClass',
+                stdClass::class,
             ],
             [
                 'string(***REDACTED***)',
@@ -212,7 +214,7 @@ class SmartJsonFormatterTest extends TestCase
                 'array(1)',
                 'int(42)',
                 'float(***REDACTED***)',
-                'stdClass',
+                stdClass::class,
             ],
             [],
         ];

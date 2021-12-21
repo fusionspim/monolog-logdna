@@ -6,8 +6,8 @@ use Throwable;
 class SmartJsonFormatter extends BasicJsonFormatter
 {
     protected $includeStacktraces = true;
-    protected $maps               = [];
-    protected $filters            = [];
+    protected array $maps         = [];
+    protected array $filters      = [];
 
     public function addMap(callable $fn): void
     {
@@ -27,7 +27,7 @@ class SmartJsonFormatter extends BasicJsonFormatter
     protected function normalizeException(Throwable $exception, int $depth = 0): array
     {
         $data = [
-            'class'   => get_class($exception),
+            'class'   => $exception::class,
             'message' => $exception->getMessage(),
             'code'    => $exception->getCode(),
             'file'    => $exception->getFile() . ':' . $exception->getLine(),
@@ -103,7 +103,7 @@ class SmartJsonFormatter extends BasicJsonFormatter
             if (is_array($arg)) {
                 $params[] = 'array(' . count($arg) . ')';
             } elseif (is_object($arg)) {
-                $params[] = get_class($arg);
+                $params[] = $arg::class;
             } elseif (is_string($arg)) {
                 $params[] = 'string(' . $arg . ')';
             } elseif (is_int($arg)) {
