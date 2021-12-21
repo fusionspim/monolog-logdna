@@ -3,8 +3,6 @@ namespace Fusions\Monolog\LogDna\Filter;
 
 class IgnorePathsFilter
 {
-    protected $ignorePaths = [];
-
     /**
      * Omit stack trace frames containing specific file paths.
      * This is useful when you have deep stacks (e.g. middleware) or want to exclude vendor components that aren't relevant.
@@ -16,9 +14,8 @@ class IgnorePathsFilter
      *     '...',
      * ]
      */
-    public function __construct(array $ignorePaths)
+    public function __construct(protected array $ignorePaths)
     {
-        $this->ignorePaths = $ignorePaths;
     }
 
     public function __invoke(array $frame): bool

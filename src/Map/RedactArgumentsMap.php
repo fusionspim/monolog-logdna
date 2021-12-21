@@ -3,7 +3,7 @@ namespace Fusions\Monolog\LogDna\Map;
 
 class RedactArgumentsMap
 {
-    private $sensitiveArguments = [];
+    private array $sensitiveArguments = [];
 
     /**
      * Redact arguments from stack trace frames belonging to a specific class method or function.

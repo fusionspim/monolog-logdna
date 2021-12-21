@@ -96,7 +96,7 @@ class LogDnaHandlerTest extends TestCase
 
         $longTrace = [];
 
-        while (mb_strlen(json_encode($longTrace), '8bit') <= 50_000) {
+        while (mb_strlen(json_encode($longTrace, JSON_THROW_ON_ERROR), '8bit') <= 50_000) {
             $longTrace[] = [
                 'class'    => 'MyClass',
                 'function' => 'baz',
@@ -107,7 +107,7 @@ class LogDnaHandlerTest extends TestCase
             ];
         }
 
-        $this->assertGreaterThan(30_000, mb_strlen(json_encode($longTrace), '8bit'));
+        $this->assertGreaterThan(30_000, mb_strlen(json_encode($longTrace, JSON_THROW_ON_ERROR), '8bit'));
 
         $logger->info('This is a test message', [
             'exception' => $this->getExceptionWithStackTrace('This is a test exception', 42, null, $longTrace),
@@ -122,7 +122,7 @@ class LogDnaHandlerTest extends TestCase
             ['timestamp', 'file', 'truncated']
         );
 
-        $decodedBody = json_decode($handler->getLastBody(), true);
+        $decodedBody = json_decode($handler->getLastBody(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertSame(30_000, mb_strlen($decodedBody['lines'][0]['meta']['truncated'], '8bit'));
     }
 
@@ -130,7 +130,7 @@ class LogDnaHandlerTest extends TestCase
     {
         $this->assertJsonStringEqualsJsonString(
             file_get_contents($expectedFile),
-            json_encode($this->removeKeys(json_decode($json, true), $ignoring))
+            json_encode($this->removeKeys(json_decode($json, true, 512, JSON_THROW_ON_ERROR), $ignoring), JSON_THROW_ON_ERROR)
         );
     }
 

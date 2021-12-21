@@ -16,20 +16,15 @@ class LogDnaHandler extends AbstractProcessingHandler
     public const LOGDNA_INGESTION_URL   = 'https://logs.logdna.com/logs/ingest';
     public const LOGDNA_META_DATA_LIMIT = 30_000;
 
-    private $ingestionKey = '';
-    private $hostName     = '';
-    private $ipAddress    = '';
-    private $macAddress   = '';
-    private $tags         = [];
-    private $httpClient;
-    private $lastResponse;
-    private $lastBody;
+    private string $ipAddress                    = '';
+    private string $macAddress                   = '';
+    private array $tags                          = [];
+    private HttpClientInterface|null $httpClient = null;
+    private ResponseInterface|null $lastResponse = null;
+    private string|null $lastBody                = null;
 
-    public function __construct(string $ingestionKey, string $hostName, $level = Logger::DEBUG, $bubble = true)
+    public function __construct(private string $ingestionKey, private string $hostName, string $level = Logger::DEBUG, bool $bubble = true)
     {
-        $this->ingestionKey = $ingestionKey;
-        $this->hostName     = $hostName;
-
         parent::__construct($level, $bubble);
     }
 
@@ -82,7 +77,7 @@ class LogDnaHandler extends AbstractProcessingHandler
          *
          * Confirmed the behaviour in ticket 10474.
          */
-        $decodedBody = json_decode($body, true);
+        $decodedBody = json_decode($body, true, 512, JSON_THROW_ON_ERROR);
 
         if (mb_strlen(json_encode($decodedBody['lines'][0]['meta'], JSON_PRETTY_PRINT), '8bit') > static::LOGDNA_META_DATA_LIMIT) {
             $body = json_encode([
