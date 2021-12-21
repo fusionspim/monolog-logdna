@@ -9,10 +9,10 @@ use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigura
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     // get parameters
-    $parameters = $containerConfigurator->parameters();
-    $parameters->set(Option::PATHS, [
-        __DIR__ . '/src'
-    ]);
+    // $parameters = $containerConfigurator->parameters();
+    // $parameters->set(Option::PATHS, [
+    //      __DIR__ . '/src'
+    // ]);
 
     // Define what rule sets will be applied
     $containerConfigurator->import(LevelSetList::UP_TO_PHP_80);
