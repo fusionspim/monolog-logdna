@@ -19,7 +19,6 @@
         "ergebnis/composer-normalize": "^2.6",
         "fusionspim/php-cs-fixer-config": "^9.0",
         "phpunit/phpunit": "^9.0.0",
-        "rector/rector": "^0.12.8",
         "symfony/var-dumper": "^5.0 || ^6.0"
     },
     "minimum-stability": "stable",
@@ -38,7 +37,6 @@
             "php-cs-fixer fix --config=.php-cs-fixer.dist.php; echo",
             "composer normalize; echo"
         ],
-        "fix-rector": "vendor/bin/rector process src tests",
         "test": [
             "phpunit --stop-on-failure --stop-on-error; echo"
         ]
