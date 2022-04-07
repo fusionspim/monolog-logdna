@@ -12,7 +12,6 @@
     "require": {
         "php": "^8.0",
         "ext-json": "^8.0",
-        "guzzlehttp/guzzle": "^6.3 || ^7.0",
         "monolog/monolog": "^2.0"
     },
     "require-dev": {
