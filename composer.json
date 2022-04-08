@@ -17,7 +17,7 @@
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.25",
-        "fusionspim/php-cs-fixer-config": "^9.0",
+        "fusionspim/php-cs-fixer-config": "^10.0",
         "phpunit/phpunit": "^9.0.0",
         "symfony/var-dumper": "^5.0 || ^6.0"
     },
