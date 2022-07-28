@@ -5,9 +5,17 @@ use Throwable;
 
 class SmartJsonFormatter extends BasicJsonFormatter
 {
-    protected $includeStacktraces = true;
-    protected array $maps         = [];
-    protected array $filters      = [];
+    protected array $maps    = [];
+    protected array $filters = [];
+
+    public function __construct(
+        int $batchMode = self::BATCH_MODE_JSON,
+        bool $appendNewline = true,
+        bool $ignoreEmptyContextAndExtra = false,
+        bool $includeStacktraces = true // We're overriding the default here.
+    ) {
+        parent::__construct($batchMode, $appendNewline, $ignoreEmptyContextAndExtra, $includeStacktraces);
+    }
 
     public function addMap(callable $fn): void
     {
