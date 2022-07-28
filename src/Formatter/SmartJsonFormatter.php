@@ -5,8 +5,8 @@ use Throwable;
 
 class SmartJsonFormatter extends BasicJsonFormatter
 {
-    protected array $maps         = [];
-    protected array $filters      = [];
+    protected array $maps    = [];
+    protected array $filters = [];
 
     public function __construct(
         int $batchMode = self::BATCH_MODE_JSON,
