@@ -1,7 +1,6 @@
 <?php
 namespace Fusions\Monolog\LogDna\Handler;
 
-use Fusions\Monolog\LogDna\Formatter\BasicJsonFormatter;
 use GuzzleHttp\{Client as HttpClient, ClientInterface as HttpClientInterface};
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\JsonFormatter;

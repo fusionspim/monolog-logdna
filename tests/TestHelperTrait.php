@@ -1,9 +1,7 @@
 <?php
 namespace Fusions\Test\Monolog\LogDna;
 
-use DateTimeImmutable;
 use Exception;
-use Monolog\Logger;
 use stdClass;
 use Throwable;
 
