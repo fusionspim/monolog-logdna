@@ -5,31 +5,38 @@ use Spatie\Snapshots\Drivers\JsonDriver;
 
 /**
  * Extends the default JSON driver with the ability to replace key/value pairs in the JSON.
- * This is helpful for fields that may change, such as timestamps.
+ * This is helpful for fields that may change, such as timestamps and file paths.
  */
 class ReplacedJsonDriver extends JsonDriver
 {
     public function __construct(protected array $replacements = [])
     {
+        foreach ($this->replacements as $field => $replacement) {
+            $this->replacements[$field] = ! is_callable($replacement)
+                ? fn () => $replacement
+                : $replacement;
+        }
     }
 
     public function serialize($data): string
     {
-        return parent::serialize($this->replace($data));
+        return parent::serialize($this->replaceData($data));
     }
 
     public function match($expected, $actual): void
     {
-        parent::match($expected, $this->replace($actual));
+        parent::match($expected, $this->replaceData($actual));
     }
 
-    protected function replace(array $data): array
+    protected function replaceData(array $data): array
     {
         foreach ($data as $key => $value) {
             if (is_array($value)) {
-                $data[$key] = $this->replace($value);
+                $data[$key] = $this->replaceData($value);
             } else {
-                $data[$key] = $this->replacements[$key] ?? $value;
+                $data[$key] = isset($this->replacements[$key])
+                    ? $this->replacements[$key]($value)
+                    : $value;
             }
         }
 

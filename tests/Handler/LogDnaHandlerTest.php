@@ -53,7 +53,10 @@ class LogDnaHandlerTest extends TestCase
         $this->assertSame('{ "status": "ok" }', $response->getBody()->getContents());
         $this->assertMatchesSnapshot(
             json_decode($handler->getLastBody(), true),
-            new ReplacedJsonDriver(['datetime' => '2022-02-02T02:02:02.000000+00:00'])
+            new ReplacedJsonDriver([
+                'datetime' => '2022-02-02T02:02:02.000000+00:00',
+                'file'     => fn (string $value) => str_replace(['/home/runner/work/monolog-logdna/monolog-logdna', '/app'], ['', ''], $value)
+            ])
         );
     }
 }

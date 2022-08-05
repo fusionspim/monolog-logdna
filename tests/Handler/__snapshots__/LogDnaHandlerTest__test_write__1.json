@@ -5,7 +5,7 @@
             "class": "Fusions\\Test\\Monolog\\LogDna\\StackTraceTestException",
             "message": "",
             "code": 0,
-            "file": "\/app\/tests\/TestHelperTrait.php:14",
+            "file": "\/tests\/TestHelperTrait.php:12",
             "trace": [
                 "\/my\/fake\/path\/src\/MyClass.php:256",
                 "\/my\/fake\/path\/src\/Nested\/MyNestedClass.php:512",
