@@ -1,16 +1,15 @@
 <?php
 namespace Fusions\Test\Monolog\LogDna\Handler;
 
-use Fusions\Monolog\LogDna\Formatter\SmartJsonFormatter;
 use Fusions\Monolog\LogDna\Handler\LogDnaHandler;
+use Fusions\Test\Monolog\LogDna\ReplacedJsonDriver;
 use Fusions\Test\Monolog\LogDna\TestHelperTrait;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\{Client, HandlerStack};
-use Monolog\Formatter\JsonFormatter;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
-use stdClass;
+use Spatie\Snapshots\MatchesSnapshots;
 
 /**
  * @coversDefaultClass \Fusions\Monolog\LogDna\Handler\LogDnaHandler
@@ -18,6 +17,7 @@ use stdClass;
 class LogDnaHandlerTest extends TestCase
 {
     use TestHelperTrait;
+    use MatchesSnapshots;
 
     /**
      * @covers ::setFormatter
@@ -51,8 +51,9 @@ class LogDnaHandlerTest extends TestCase
         $response = $handler->getLastResponse();
         $this->assertSame(200, $response->getStatusCode());
         $this->assertSame('{ "status": "ok" }', $response->getBody()->getContents());
-        $this->assertJsonStringEqualsJsonFile(
-            __DIR__ . '/../fixtures/logdna-body.json', $handler->getLastBody()
+        $this->assertMatchesSnapshot(
+            json_decode($handler->getLastBody(), true),
+            new ReplacedJsonDriver(['datetime' => '2022-02-02T02:02:02.000000+00:00'])
         );
     }
 }

@@ -19,7 +19,8 @@
         "ergebnis/composer-normalize": "^2.25",
         "fusionspim/php-cs-fixer-config": "^10.0",
         "phpunit/phpunit": "^9.0.0",
-        "symfony/var-dumper": "^5.0 || ^6.0"
+        "symfony/var-dumper": "^5.0 || ^6.0",
+        "spatie/phpunit-snapshot-assertions": "^4.2"
     },
     "minimum-stability": "stable",
     "autoload": {
@@ -40,5 +41,10 @@
         "test": [
             "phpunit --stop-on-failure --stop-on-error; echo"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        }
     }
 }
