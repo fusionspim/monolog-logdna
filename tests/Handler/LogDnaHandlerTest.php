@@ -55,7 +55,7 @@ class LogDnaHandlerTest extends TestCase
             json_decode($handler->getLastBody(), true),
             new ReplacedJsonDriver([
                 'datetime' => '2022-02-02T02:02:02.000000+00:00',
-                'file'     => fn (string $value) => str_replace(['/home/runner/work/monolog-logdna/monolog-logdna', '/app'], ['', ''], $value)
+                'file'     => fn (string $value) => str_replace(['/home/runner/work/monolog-logdna/monolog-logdna', '/app'], ['', ''], $value),
             ])
         );
     }
