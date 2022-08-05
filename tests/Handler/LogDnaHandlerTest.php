@@ -7,7 +7,6 @@ use Fusions\Test\Monolog\LogDna\TestHelperTrait;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\{Client, HandlerStack};
-use Monolog\DateTimeImmutable;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
