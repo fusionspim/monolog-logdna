@@ -2,8 +2,8 @@
 namespace Fusions\Monolog\LogDna\Handler;
 
 use GuzzleHttp\{Client as HttpClient, ClientInterface as HttpClientInterface};
+use Fusions\Monolog\LogDna\Formatter\JsonFormatter;
 use Monolog\Formatter\FormatterInterface;
-use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
@@ -58,7 +58,7 @@ class LogDnaHandler extends AbstractProcessingHandler
 
     protected function getDefaultFormatter(): FormatterInterface
     {
-        return new JsonFormatter(includeStacktraces: true);
+        return new JsonFormatter;
     }
 
     public function write(array $record): void
