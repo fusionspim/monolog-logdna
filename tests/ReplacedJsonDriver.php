@@ -18,7 +18,7 @@ class ReplacedJsonDriver extends JsonDriver
         return parent::serialize($this->replace($data));
     }
 
-    public function match($expected, $actual)
+    public function match($expected, $actual): void
     {
         parent::match($expected, $this->replace($actual));
     }

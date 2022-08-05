@@ -19,8 +19,8 @@
         "ergebnis/composer-normalize": "^2.25",
         "fusionspim/php-cs-fixer-config": "^10.0",
         "phpunit/phpunit": "^9.0.0",
-        "symfony/var-dumper": "^5.0 || ^6.0",
-        "spatie/phpunit-snapshot-assertions": "^4.2"
+        "spatie/phpunit-snapshot-assertions": "^4.2",
+        "symfony/var-dumper": "^5.0 || ^6.0"
     },
     "minimum-stability": "stable",
     "autoload": {
@@ -33,6 +33,11 @@
             "Fusions\\Test\\Monolog\\LogDna\\": "tests/"
         }
     },
+    "config": {
+        "allow-plugins": {
+            "ergebnis/composer-normalize": true
+        }
+    },
     "scripts": {
         "fix": [
             "php-cs-fixer fix --config=.php-cs-fixer.dist.php; echo",
@@ -41,10 +46,5 @@
         "test": [
             "phpunit --stop-on-failure --stop-on-error; echo"
         ]
-    },
-    "config": {
-        "allow-plugins": {
-            "ergebnis/composer-normalize": true
-        }
     }
 }

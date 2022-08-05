@@ -16,17 +16,17 @@ use Spatie\Snapshots\MatchesSnapshots;
  */
 class LogDnaHandlerTest extends TestCase
 {
-    use TestHelperTrait;
     use MatchesSnapshots;
+    use TestHelperTrait;
 
     /**
+     * @covers ::getLastBody
+     * @covers ::getLastResponse
      * @covers ::setFormatter
      * @covers ::setHttpClient
      * @covers ::setIpAddress
      * @covers ::setMacAddress
      * @covers ::setTags
-     * @covers ::getLastBody
-     * @covers ::getLastResponse
      */
     public function test_write(): void
     {
