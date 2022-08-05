@@ -7,6 +7,7 @@ use Fusions\Test\Monolog\LogDna\TestHelperTrait;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\{Client, HandlerStack};
+use Monolog\DateTimeImmutable;
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -54,9 +55,9 @@ class LogDnaHandlerTest extends TestCase
         $this->assertMatchesSnapshot(
             json_decode($handler->getLastBody(), true),
             new ReplacedJsonDriver([
-                'datetime' => '2022-02-02T02:02:02.000000+00:00',
-                'file'     => fn (string $value) => str_replace(['/home/runner/work/monolog-logdna/monolog-logdna', '/app'], ['', ''], $value),
-            ])
+                'timestamp' => fn (string $value) => 1643767322, // 2022-02-02 02:02:02:00
+                'file'      => fn (string $value) => str_replace(['/home/runner/work/monolog-logdna/monolog-logdna', '/app'], ['', ''], $value),
+            ]),
         );
     }
 }

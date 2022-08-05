@@ -12,9 +12,7 @@ class ReplacedJsonDriver extends JsonDriver
     public function __construct(protected array $replacements = [])
     {
         foreach ($this->replacements as $field => $replacement) {
-            $this->replacements[$field] = ! is_callable($replacement)
-                ? fn () => $replacement
-                : $replacement;
+            $this->replacements[$field] = (! is_callable($replacement) ? fn () => $replacement : $replacement);
         }
     }
 
