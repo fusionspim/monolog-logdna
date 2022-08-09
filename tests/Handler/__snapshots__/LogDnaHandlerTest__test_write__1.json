@@ -1,0 +1,24 @@
+{
+    "lines": [
+        {
+            "timestamp": 1643767322,
+            "line": "This is a test message",
+            "app": "test",
+            "level": "INFO",
+            "meta": {
+                "exception": {
+                    "class": "Fusions\\Test\\Monolog\\LogDna\\StackTraceTestException",
+                    "message": "",
+                    "code": 0,
+                    "file": "\/tests\/TestHelperTrait.php:12",
+                    "trace": [
+                        "\/my\/fake\/path\/src\/MyClass.php:256",
+                        "\/my\/fake\/path\/src\/Nested\/MyNestedClass.php:512",
+                        "\/my\/fake\/path\/vendor\/MyVendorClass.php:123",
+                        "\/my\/fake\/path\/require.php:42"
+                    ]
+                }
+            }
+        }
+    ]
+}
