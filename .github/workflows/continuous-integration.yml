@@ -41,8 +41,8 @@ jobs:
     - name: Run Composer normalized
       run: composer normalize --dry-run
 
-    - name: Run PHP CS fixer
-      run: vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.dist.php --dry-run --diff --verbose --stop-on-violation
+    - name: Run Pint code sniffer
+      run: vendor/bin/pint --test
 
     - name: Run unit tests
       run: vendor/bin/phpunit --stop-on-failure --stop-on-error
