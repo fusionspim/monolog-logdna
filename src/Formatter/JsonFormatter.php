@@ -1,4 +1,5 @@
 <?php
+
 namespace Fusions\Monolog\LogDna\Formatter;
 
 use Monolog\Formatter\JsonFormatter as MonologJsonFormatter;
@@ -20,10 +21,10 @@ class JsonFormatter extends MonologJsonFormatter
             'lines' => [
                 [
                     'timestamp' => $record['datetime']->getTimestamp(),
-                    'line'      => $record['message'],
-                    'app'       => $record['channel'],
-                    'level'     => $record['level_name'],
-                    'meta'      => $record['context'],
+                    'line' => $record['message'],
+                    'app' => $record['channel'],
+                    'level' => $record['level_name'],
+                    'meta' => $record['context'],
                 ],
             ],
         ]);

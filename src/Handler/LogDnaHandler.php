@@ -1,8 +1,10 @@
 <?php
+
 namespace Fusions\Monolog\LogDna\Handler;
 
 use Fusions\Monolog\LogDna\Formatter\JsonFormatter;
-use GuzzleHttp\{Client as HttpClient, ClientInterface as HttpClientInterface};
+use GuzzleHttp\Client as HttpClient;
+use GuzzleHttp\ClientInterface as HttpClientInterface;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
@@ -15,12 +17,17 @@ class LogDnaHandler extends AbstractProcessingHandler
 {
     public const LOGDNA_INGESTION_URL = 'https://logs.logdna.com/logs/ingest';
 
-    private string $ipAddress                    = '';
-    private string $macAddress                   = '';
-    private array $tags                          = [];
+    private string $ipAddress = '';
+
+    private string $macAddress = '';
+
+    private array $tags = [];
+
     private HttpClientInterface|null $httpClient = null;
+
     private ResponseInterface|null $lastResponse = null;
-    private string|null $lastBody                = null;
+
+    private string|null $lastBody = null;
 
     public function __construct(private string $ingestionKey, private string $hostName, string $level = Logger::DEBUG, bool $bubble = true)
     {
@@ -74,10 +81,10 @@ class LogDnaHandler extends AbstractProcessingHandler
             ],
             'query' => [
                 'hostname' => $this->hostName,
-                'mac'      => $this->macAddress,
-                'ip'       => $this->ipAddress,
-                'now'      => $record['datetime']->getTimestamp(),
-                'tags'     => $this->tags,
+                'mac' => $this->macAddress,
+                'ip' => $this->ipAddress,
+                'now' => $record['datetime']->getTimestamp(),
+                'tags' => $this->tags,
             ],
             'body' => $record['formatted'],
         ]);

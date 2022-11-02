@@ -1,4 +1,5 @@
 <?php
+
 namespace Fusions\Test\Monolog\LogDna;
 
 use Spatie\Snapshots\Drivers\JsonDriver;

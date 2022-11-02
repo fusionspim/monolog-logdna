@@ -1,12 +1,14 @@
 <?php
+
 namespace Fusions\Test\Monolog\LogDna\Handler;
 
 use Fusions\Monolog\LogDna\Handler\LogDnaHandler;
 use Fusions\Test\Monolog\LogDna\ReplacedJsonDriver;
 use Fusions\Test\Monolog\LogDna\TestHelperTrait;
+use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\{Client, HandlerStack};
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -55,7 +57,7 @@ class LogDnaHandlerTest extends TestCase
             json_decode($handler->getLastBody(), true),
             new ReplacedJsonDriver([
                 'timestamp' => fn (string $value) => 1643767322, // 2022-02-02 02:02:02:00
-                'file'      => fn (string $value) => str_replace(['/home/runner/work/monolog-logdna/monolog-logdna', '/app'], ['', ''], $value),
+                'file' => fn (string $value) => str_replace(['/home/runner/work/monolog-logdna/monolog-logdna', '/app'], ['', ''], $value),
             ]),
         );
     }
