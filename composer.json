@@ -17,6 +17,7 @@
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.25",
+        "fusionspim/pint-coding-style": "^1.0",
         "laravel/pint": "^1.2",
         "phpunit/phpunit": "^9.0.0",
         "spatie/phpunit-snapshot-assertions": "^4.2",
@@ -40,9 +41,10 @@
     },
     "scripts": {
         "fix": [
-            "pint",
+            "composer fix-cs",
             "composer normalize; echo"
         ],
+        "fix-cs": "pint --config vendor/fusionspim/pint-coding-style/pint.json",
         "test": [
             "phpunit --stop-on-failure --stop-on-error; echo"
         ]

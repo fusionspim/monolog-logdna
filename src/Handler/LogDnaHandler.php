@@ -81,10 +81,10 @@ class LogDnaHandler extends AbstractProcessingHandler
             ],
             'query' => [
                 'hostname' => $this->hostName,
-                'mac' => $this->macAddress,
-                'ip' => $this->ipAddress,
-                'now' => $record['datetime']->getTimestamp(),
-                'tags' => $this->tags,
+                'mac'      => $this->macAddress,
+                'ip'       => $this->ipAddress,
+                'now'      => $record['datetime']->getTimestamp(),
+                'tags'     => $this->tags,
             ],
             'body' => $record['formatted'],
         ]);

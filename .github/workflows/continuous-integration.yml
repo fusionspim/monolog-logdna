@@ -42,7 +42,7 @@ jobs:
       run: composer normalize --dry-run
 
     - name: Run Pint code sniffer
-      run: vendor/bin/pint --test
+      run: composer fix-cs -- --test
 
     - name: Run unit tests
       run: vendor/bin/phpunit --stop-on-failure --stop-on-error
