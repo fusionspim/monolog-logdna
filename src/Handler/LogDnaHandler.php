@@ -17,17 +17,12 @@ class LogDnaHandler extends AbstractProcessingHandler
 {
     public const LOGDNA_INGESTION_URL = 'https://logs.logdna.com/logs/ingest';
 
-    private string $ipAddress = '';
-
-    private string $macAddress = '';
-
-    private array $tags = [];
-
+    private string $ipAddress                    = '';
+    private string $macAddress                   = '';
+    private array $tags                          = [];
     private HttpClientInterface|null $httpClient = null;
-
     private ResponseInterface|null $lastResponse = null;
-
-    private string|null $lastBody = null;
+    private string|null $lastBody                = null;
 
     public function __construct(private string $ingestionKey, private string $hostName, string $level = Logger::DEBUG, bool $bubble = true)
     {
