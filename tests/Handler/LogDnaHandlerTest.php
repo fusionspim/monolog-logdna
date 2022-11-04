@@ -1,12 +1,14 @@
 <?php
+
 namespace Fusions\Test\Monolog\LogDna\Handler;
 
 use Fusions\Monolog\LogDna\Handler\LogDnaHandler;
 use Fusions\Test\Monolog\LogDna\ReplacedJsonDriver;
 use Fusions\Test\Monolog\LogDna\TestHelperTrait;
+use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
-use GuzzleHttp\{Client, HandlerStack};
 use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;

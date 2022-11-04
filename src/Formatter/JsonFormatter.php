@@ -1,4 +1,5 @@
 <?php
+
 namespace Fusions\Monolog\LogDna\Formatter;
 
 use Monolog\Formatter\JsonFormatter as MonologJsonFormatter;
