@@ -10,7 +10,7 @@ This package aims to be compatible with the latest version of Laravel, which cur
 * Laravel 9
 * Monolog 2
 
-There is an alternative [package recommended by Mezmo](https://github.com/nvanheuverzwijn/monolog-logdna) but this only appears to support PHP 8 with Monolog 3 and Monolog 2 with PHP 7.
+There is an alternative [package recommended by Mezmo](https://github.com/nvanheuverzwijn/monolog-logdna) but this only appears to support PHP 8 with Monolog 3, or PHP 7 Monolog 2 - i.e. PHP 8 with Monolog 2 isn't supported.
 
 ## Installation
 
