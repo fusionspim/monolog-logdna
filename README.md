@@ -1,6 +1,16 @@
-# LogDNA handler for Monolog
+# Mezmo/LogDNA handler for Monolog
 
-This library provides a simple Monolog handler for [LogDNA's](https://logdna.com/) [ingestion API](https://docs.logdna.com/reference#logsingest). 
+This library provides a simple Monolog handler for [Mezmo](https://www.mezmo.com/) (previously LogDNA) [ingestion API](https://docs.mezmo.com/log-analysis-api/ref#ingest). 
+
+## Compatibility
+
+This package aims to be compatible with the latest version of Laravel, which currently means supporting:
+
+* PHP 8
+* Laravel 9
+* Monolog 2
+
+There is an alternative [package recommended by Mezmo](https://github.com/nvanheuverzwijn/monolog-logdna) but this only appears to support PHP 8 with Monolog 3, or PHP 7 Monolog 2 - i.e. PHP 8 with Monolog 2 isn't supported.
 
 ## Installation
 
