@@ -71,17 +71,17 @@ class LogDnaHandler extends AbstractProcessingHandler
             'headers' => [
                 'Content-Type' => 'application/json; charset=UTF-8',
             ],
-            'auth' => [
+            'auth'    => [
                 $this->ingestionKey, '',
             ],
-            'query' => [
+            'query'   => [
                 'hostname' => $this->hostName,
                 'mac'      => $this->macAddress,
                 'ip'       => $this->ipAddress,
                 'now'      => $record['datetime']->getTimestamp(),
                 'tags'     => $this->tags,
             ],
-            'body' => $record['formatted'],
+            'body'    => $record['formatted'],
         ]);
     }
 
