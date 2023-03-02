@@ -1,0 +1,30 @@
+{
+    "cache-file": ".pint.cache",
+    "preset": "laravel",
+    "rules": {
+        "concat_space": {
+            "spacing": "one"
+        },
+        "binary_operator_spaces": {
+            "operators": {
+                "=>": "align_single_space",
+                "=": "align_single_space",
+                "+=": "align_single_space",
+                "-=": "align_single_space",
+                ".=": "align_single_space",
+                "??=": "align_single_space"
+            }
+        },
+        "class_attributes_separation": {
+            "elements": {
+                "method": "one"
+            }
+        }
+    },
+    "exclude": [],
+    "notPath": [
+        "public/index.php",
+        "bootstrap/app.php"
+    ]
+}
+
