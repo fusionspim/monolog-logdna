@@ -9,6 +9,7 @@ use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
 use Psr\Http\Message\ResponseInterface;
+use Monolog\LogRecord;
 
 /**
  * @see: https://docs.logdna.com/reference#logsingest
@@ -63,9 +64,9 @@ class LogDnaHandler extends AbstractProcessingHandler
         return new JsonFormatter;
     }
 
-    public function write(array $record): void
+    public function write(LogRecord $record): void
     {
-        $this->lastBody = $record['formatted'];
+        $this->lastBody = $record->formatted;
 
         $this->lastResponse = $this->getHttpClient()->request('POST', static::LOGDNA_INGESTION_URL, [
             'headers' => [
@@ -78,10 +79,10 @@ class LogDnaHandler extends AbstractProcessingHandler
                 'hostname' => $this->hostName,
                 'mac'      => $this->macAddress,
                 'ip'       => $this->ipAddress,
-                'now'      => $record['datetime']->getTimestamp(),
+                'now'      => $record->datetime->getTimestamp(),
                 'tags'     => $this->tags,
             ],
-            'body' => $record['formatted'],
+            'body' => $record->formatted,
         ]);
     }
 

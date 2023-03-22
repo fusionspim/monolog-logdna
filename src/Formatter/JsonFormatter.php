@@ -3,6 +3,7 @@
 namespace Fusions\Monolog\LogDna\Formatter;
 
 use Monolog\Formatter\JsonFormatter as MonologJsonFormatter;
+use Monolog\LogRecord;
 
 class JsonFormatter extends MonologJsonFormatter
 {
@@ -15,18 +16,19 @@ class JsonFormatter extends MonologJsonFormatter
         parent::__construct($batchMode, $appendNewline, $ignoreEmptyContextAndExtra, $includeStacktraces);
     }
 
-    public function format(array $record): string
-    {
-        return parent::format([
+    protected function normalizeRecord(LogRecord $record): array {
+        $date = new \DateTime();
+
+        return [
             'lines' => [
                 [
-                    'timestamp' => $record['datetime']->getTimestamp(),
-                    'line'      => $record['message'],
-                    'app'       => $record['channel'],
-                    'level'     => $record['level_name'],
-                    'meta'      => $record['context'],
+                    'timestamp' => $record->datetime->getTimestamp(),
+                    'line'      => $record->message,
+                    'app'       => $record->channel,
+                    'level'     => $record->level->getName(),
+                    'meta'      => $record->context,
                 ],
             ],
-        ]);
+        ];
     }
 }
