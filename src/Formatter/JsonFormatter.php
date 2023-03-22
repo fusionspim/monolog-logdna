@@ -17,8 +17,6 @@ class JsonFormatter extends MonologJsonFormatter
     }
 
     protected function normalizeRecord(LogRecord $record): array {
-        $date = new \DateTime();
-
         return [
             'lines' => [
                 [
