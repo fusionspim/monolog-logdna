@@ -4,13 +4,11 @@ This library provides a simple Monolog handler for [Mezmo](https://www.mezmo.com
 
 ## Compatibility
 
-This package aims to be compatible with the latest version of Laravel, which currently means supporting:
+This package aims to stay compatible with the latest version of Laravel. The current version supports:
 
-* PHP 8
-* Laravel 9
-* Monolog 2
-
-There is an alternative [package recommended by Mezmo](https://github.com/nvanheuverzwijn/monolog-logdna) but this only appears to support PHP 8 with Monolog 3, or PHP 7 Monolog 2 - i.e. PHP 8 with Monolog 2 isn't supported.
+* PHP 8.1
+* Laravel 10
+* Monolog 3
 
 ## Installation
 
