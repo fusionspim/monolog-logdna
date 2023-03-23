@@ -6,8 +6,8 @@ This library provides a simple Monolog handler for [Mezmo](https://www.mezmo.com
 
 This package aims to stay compatible with the latest version of Laravel. The current version supports:
 
-* PHP 8.1
 * Laravel 10
+* PHP 8.1
 * Monolog 3
 
 ## Installation
