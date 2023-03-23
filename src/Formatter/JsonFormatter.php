@@ -16,8 +16,9 @@ class JsonFormatter extends MonologJsonFormatter
         parent::__construct($batchMode, $appendNewline, $ignoreEmptyContextAndExtra, $includeStacktraces);
     }
 
-    protected function normalizeRecord(LogRecord $record): array {
-        return [
+    protected function normalizeRecord(LogRecord $record): array
+    {
+        return $this->normalize([
             'lines' => [
                 [
                     'timestamp' => $record->datetime->getTimestamp(),
@@ -27,6 +28,6 @@ class JsonFormatter extends MonologJsonFormatter
                     'meta'      => $record->context,
                 ],
             ],
-        ];
+        ]);
     }
 }

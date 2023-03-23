@@ -8,8 +8,8 @@ use GuzzleHttp\ClientInterface as HttpClientInterface;
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Handler\AbstractProcessingHandler;
 use Monolog\Logger;
-use Psr\Http\Message\ResponseInterface;
 use Monolog\LogRecord;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @see: https://docs.logdna.com/reference#logsingest
