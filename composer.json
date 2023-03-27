@@ -18,7 +18,7 @@
     "require-dev": {
         "ergebnis/composer-normalize": "^2.25",
         "laravel/pint": "^1.2",
-        "phpunit/phpunit": "^9.0.0",
+        "phpunit/phpunit": "^10.0",
         "spatie/phpunit-snapshot-assertions": "^4.2",
         "symfony/var-dumper": "^5.0 || ^6.0"
     },
