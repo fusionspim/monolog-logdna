@@ -19,7 +19,7 @@
         "ergebnis/composer-normalize": "^2.25",
         "laravel/pint": "^1.2",
         "phpunit/phpunit": "^10.0",
-        "spatie/phpunit-snapshot-assertions": "^4.2",
+        "spatie/phpunit-snapshot-assertions": "^5.0",
         "symfony/var-dumper": "^5.0 || ^6.0"
     },
     "minimum-stability": "stable",
