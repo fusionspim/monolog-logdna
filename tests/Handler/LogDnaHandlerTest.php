@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 
 #[CoversDefaultClass(\Fusions\Monolog\LogDna\Handler\LogDnaHandler)]
-class LogDnaHandlerTest extends TestCase
+final class LogDnaHandlerTest extends TestCase
 {
     use MatchesSnapshots;
     use TestHelperTrait;
