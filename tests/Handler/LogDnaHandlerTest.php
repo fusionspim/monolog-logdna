@@ -10,11 +10,12 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use Monolog\Logger;
-use PHPUnit\Framework\Attributes\CoversDefaultClass;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 
-#[CoversDefaultClass(\Fusions\Monolog\LogDna\Handler\LogDnaHandler)]
+/**
+ * @coversDefaultClass \Fusions\Monolog\LogDna\Handler\LogDnaHandler
+ */
 final class LogDnaHandlerTest extends TestCase
 {
     use MatchesSnapshots;
