@@ -2,6 +2,7 @@
 
 namespace Fusions\Test\Monolog\LogDna\Handler;
 
+use PHPUnit\Framework\Attributes\CoversDefaultClass;
 use Fusions\Monolog\LogDna\Handler\LogDnaHandler;
 use Fusions\Test\Monolog\LogDna\ReplacedJsonDriver;
 use Fusions\Test\Monolog\LogDna\TestHelperTrait;
@@ -13,9 +14,7 @@ use Monolog\Logger;
 use PHPUnit\Framework\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 
-/**
- * @coversDefaultClass \Fusions\Monolog\LogDna\Handler\LogDnaHandler
- */
+#[CoversDefaultClass(\Fusions\Monolog\LogDna\Handler\LogDnaHandler)]
 class LogDnaHandlerTest extends TestCase
 {
     use MatchesSnapshots;
