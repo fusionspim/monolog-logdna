@@ -1,5 +1,7 @@
 # Mezmo/LogDNA handler for Monolog
 
+**This package is now archived, please see https://github.com/nvanheuverzwijn/monolog-logdna**
+
 This library provides a simple Monolog handler for [Mezmo](https://www.mezmo.com/) (previously LogDNA) [ingestion API](https://docs.mezmo.com/log-analysis-api/ref#ingest). 
 
 ## Compatibility
